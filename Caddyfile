@@ -8,10 +8,6 @@
 :{$PORT:80} {
 	root * /srv
 	encode gzip zstd
-	file_server
-
-	# Serve clean URLs (/about -> /about.html) and fall back to the portfolio.
-	try_files {path} {path}.html {path}/ /index.html
 
 	header {
 		X-Content-Type-Options nosniff
@@ -21,4 +17,23 @@
 	# HTML revalidates every load so edits appear immediately after a deploy.
 	@html path *.html /
 	header @html Cache-Control "no-cache"
+
+	# Never serve build/config files. This must live here, not just in the
+	# Dockerfile: Railway builds this repo with its own static-site builder,
+	# which copies the whole repo into the web root and skips the Dockerfile's
+	# cleanup step -- but it does honor this Caddyfile.
+	#
+	# `handle` blocks are used because they evaluate in written order. With bare
+	# `respond`, Caddy's default directive order runs try_files first, which
+	# rewrites /Caddyfile to /index.html before the deny matcher ever sees it.
+	@hidden path /Caddyfile /Dockerfile /.dockerignore /.env /.env.* /.git /.git/* /*.md
+	handle @hidden {
+		respond 404
+	}
+
+	handle {
+		# Clean URLs (/about -> /about.html), falling back to the portfolio.
+		try_files {path} {path}.html {path}/ /index.html
+		file_server
+	}
 }

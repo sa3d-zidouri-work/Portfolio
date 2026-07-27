@@ -1,0 +1,11 @@
+# Never enters the build context at all.
+.git
+.gitignore
+node_modules
+.DS_Store
+.env
+.env.*
+
+# NOTE: Dockerfile/Caddyfile/README are deliberately NOT listed here — the
+# Dockerfile must COPY the Caddyfile, and .dockerignore would hide it. They are
+# deleted from the web root after the copy instead. See Dockerfile.

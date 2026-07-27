@@ -1,0 +1,24 @@
+{
+	admin off
+	persist_config off
+	auto_https off
+}
+
+# Railway injects PORT at runtime; the :80 fallback keeps `docker run` working locally.
+:{$PORT:80} {
+	root * /srv
+	encode gzip zstd
+	file_server
+
+	# Serve clean URLs (/about -> /about.html) and fall back to the portfolio.
+	try_files {path} {path}.html {path}/ /index.html
+
+	header {
+		X-Content-Type-Options nosniff
+		Referrer-Policy strict-origin-when-cross-origin
+	}
+
+	# HTML revalidates every load so edits appear immediately after a deploy.
+	@html path *.html /
+	header @html Cache-Control "no-cache"
+}

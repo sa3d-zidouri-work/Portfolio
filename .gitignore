@@ -1,0 +1,20 @@
+# Local-only working material — must never reach the repo or the live site.
+# The Caddyfile notes that Railway's static builder ignores .dockerignore, so
+# git is the only reliable place to stop these from being served publicly.
+design-lab/
+Sample Portfolio/
+PRODUCT.md
+DESIGN.md
+*.docx
+
+# Editor / OS / tooling noise
+.impeccable/
+.DS_Store
+.env
+.env.*
+node_modules/
+
+# Pasted screenshots land in assets/ by accident; real app art is committed
+# explicitly by name.
+assets/Pasted image*.png
+assets/Screenshot From*.png

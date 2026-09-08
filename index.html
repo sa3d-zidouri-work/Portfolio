@@ -1343,6 +1343,28 @@ html[data-theme="dark"] .phone{ box-shadow:var(--shadow), inset 0 0 0 5px #05060
     <article class="win w-feat">
       <header class="tbar">
         <span class="tbar-glyph" aria-hidden="true">⎇</span>
+        <h3>journey-joy</h3>
+        <span class="tbar-controls" aria-hidden="true"><i>–</i><i>▢</i><i>×</i></span>
+      </header>
+      <div class="win-body">
+        <span class="badge badge-lock"><span class="en">Private · client work</span><span class="ar" lang="ar">خاص · عمل لعميل</span></span>
+        <p><span class="en">Ride-hailing platform: one backend serving an admin panel plus separate driver and passenger apps. I inherited the codebase from a previous contractor and took it to launch. <b>372 of its 381 commits are mine.</b></span>
+           <span class="ar" lang="ar">منصة نقل تشاركي: خادم واحد يخدم لوحة تحكم إدارية وتطبيقَي السائق والراكب. تسلّمتُ الشيفرة من مقاول سابق وأوصلتُها إلى الإطلاق. <b>372 من أصل 381 إيداعًا لي.</b></span></p>
+        <ul class="specs">
+          <li><span class="en">removed a MASTER_OTP backdoor that unlocked any account</span><span class="ar" lang="ar">أزلتُ ثغرة MASTER_OTP التي كانت تفتح أي حساب</span></li>
+          <li><span class="en">two IDOR fixes · path traversal closed · Paymob HMAC verified</span><span class="ar" lang="ar">إصلاح ثغرتَي IDOR · إغلاق اجتياز المسارات · التحقق من توقيع Paymob</span></li>
+          <li><span class="en">43 customers' data purged from git history, rewrite verified</span><span class="ar" lang="ar">تطهير بيانات 43 عميلًا من سجل المستودع، مع التحقق من إعادة الكتابة</span></li>
+        </ul>
+        <footer class="win-foot">
+          <span class="lang-dot"><i style="--dot:#00B4AB"></i>Flutter · Node · React</span>
+          <span>role: primary contributor</span>
+        </footer>
+      </div>
+    </article>
+
+    <article class="win w-b">
+      <header class="tbar">
+        <span class="tbar-glyph" aria-hidden="true">⎇</span>
         <h3>alrugaib-sales-platform</h3>
         <span class="tbar-controls" aria-hidden="true"><i>–</i><i>▢</i><i>×</i></span>
       </header>
@@ -1352,7 +1374,7 @@ html[data-theme="dark"] .phone{ box-shadow:var(--shadow), inset 0 0 0 5px #05060
            <span class="ar" lang="ar">التطبيق الداخلي للمبيعات في شركة الرقيب للأثاث، أعيد بناؤه من شاشة بحث واحدة عن رقم الصنف إلى منصة متعددة الوحدات يستخدمها يوميًا <b>أكثر من 300 موظف في 15 فرعًا</b>. الشيفرة ملك للشركة؛ أما النتائج فقابلة للعرض.</span></p>
         <ul class="specs">
           <li><span class="en">catalog: 160,000 items · loads 10–15 s → under 3 s</span><span class="ar" lang="ar">الكتالوج: 160,000 صنف · التحميل من 10–15 ثانية إلى أقل من 3 ثوانٍ</span></li>
-          <li><span class="en">Tabby ⇄ Microsoft Dynamics 365 — owned end-to-end, complete</span><span class="ar" lang="ar">تكامل Tabby مع Microsoft Dynamics 365 — من البداية إلى النهاية، مكتمل</span></li>
+          <li><span class="en">quotations write straight into Dynamics 365 production · bilingual PDFs</span><span class="ar" lang="ar">عروض الأسعار تُكتب مباشرة في بيئة Dynamics 365 الإنتاجية · بملفات PDF ثنائية اللغة</span></li>
           <li><span class="en">RBAC mapped to the real company hierarchy</span><span class="ar" lang="ar">صلاحيات RBAC تطابق الهيكل الإداري الفعلي</span></li>
         </ul>
         <footer class="win-foot">
@@ -1362,19 +1384,24 @@ html[data-theme="dark"] .phone{ box-shadow:var(--shadow), inset 0 0 0 5px #05060
       </div>
     </article>
 
-    <article class="win w-b">
+    <article class="win w-d">
       <header class="tbar">
         <span class="tbar-glyph" aria-hidden="true">⎇</span>
-        <h3><a href="https://github.com/sa3d-zidouri-work" rel="noopener">recon-automation-toolkit</a></h3>
+        <h3>peregrine</h3>
         <span class="tbar-controls" aria-hidden="true"><i>–</i><i>▢</i><i>×</i></span>
       </header>
       <div class="win-body">
-        <span class="badge"><span class="en">Public</span><span class="ar" lang="ar">عام</span></span>
-        <p><span class="en">Python recon automation: wraps Nmap workflows and flags exposed files and directories on practice targets. The same tooling that runs in the console below.</span>
-           <span class="ar" lang="ar">أتمتة استطلاع بلغة Python: تغلّف سير عمل Nmap وترصد الملفات والمجلدات المكشوفة على أهداف تدريبية. وهي الأداة نفسها التي تظهر في وحدة الأوامر أدناه.</span></p>
+        <span class="badge badge-lock"><span class="en">Private · solo</span><span class="ar" lang="ar">خاص · عمل فردي</span></span>
+        <p><span class="en">An AI job-hunting SaaS I built alone: parse a CV into a profile, score roles against it with vector search, tailor a resume to each one, then run recruiter outreach behind a compliance gate that cannot be bypassed.</span>
+           <span class="ar" lang="ar">منصة برمجية للبحث عن وظائف بالذكاء الاصطناعي بنيتُها وحدي: تحليل السيرة الذاتية إلى ملف مهني، وترتيب الوظائف بالبحث المتجهي، وتفصيل سيرة لكل وظيفة، ثم مراسلة جهات التوظيف خلف بوابة امتثال لا يمكن تجاوزها.</span></p>
+        <ul class="specs">
+          <li><span class="en">21 tables · row-level security on all 21 · 57 policies · 39 routes</span><span class="ar" lang="ar">21 جدولًا · أمان على مستوى الصف في جميعها · 57 سياسة · 39 مسارًا</span></li>
+          <li><span class="en">CAN-SPAM / CASL / GDPR gate, re-checked at send time</span><span class="ar" lang="ar">بوابة امتثال لأنظمة CAN-SPAM وCASL وGDPR، يُعاد التحقق منها لحظة الإرسال</span></li>
+          <li><span class="en">58 test files · 467 unit tests · pre-launch, not yet provisioned</span><span class="ar" lang="ar">58 ملف اختبار · 467 اختبار وحدة · قبل الإطلاق، لم تُجهَّز الخدمات بعد</span></li>
+        </ul>
         <footer class="win-foot">
-          <span class="lang-dot"><i style="--dot:#3572A5"></i>Python</span>
-          <span>nmap · scapy</span>
+          <span class="lang-dot"><i style="--dot:#3178c6"></i>TypeScript</span>
+          <span>role: sole author</span>
         </footer>
       </div>
     </article>
@@ -1382,16 +1409,41 @@ html[data-theme="dark"] .phone{ box-shadow:var(--shadow), inset 0 0 0 5px #05060
     <article class="win w-c">
       <header class="tbar">
         <span class="tbar-glyph" aria-hidden="true">⎇</span>
-        <h3><a href="https://github.com/sa3d-zidouri-work" rel="noopener">kfupm-scheduling-app</a></h3>
+        <h3>price-tag-printer</h3>
         <span class="tbar-controls" aria-hidden="true"><i>–</i><i>▢</i><i>×</i></span>
       </header>
       <div class="win-body">
-        <span class="badge"><span class="en">Public</span><span class="ar" lang="ar">عام</span></span>
-        <p><span class="en">Desktop scheduling tool with conflict detection, built for the KFUPM lab where it cut manual errors by 40% and turned a 2-hour task into 15 minutes.</span>
-           <span class="ar" lang="ar">أداة جدولة لسطح المكتب مع كشف التعارضات، بُنيت لمختبر الجامعة حيث قلّلت الأخطاء اليدوية 40% وحوّلت مهمة الساعتين إلى 15 دقيقة.</span></p>
+        <span class="badge badge-lock"><span class="en">Private · proprietary</span><span class="ar" lang="ar">خاص · ملكية الشركة</span></span>
+        <p><span class="en">The showrooms print price tags from this every morning. A daily job diffs Dynamics prices, renders bilingual A4 tag sheets, and a desktop agent prints them in store.</span>
+           <span class="ar" lang="ar">تطبع المعارض بطاقات الأسعار من هذا النظام كل صباح. مهمة يومية تقارن أسعار Dynamics، وتُخرج صفحات بطاقات ثنائية اللغة بمقاس A4، ويطبعها وكيل مكتبي داخل الفرع.</span></p>
+        <ul class="specs">
+          <li><span class="en">9-up and 4-up bilingual tags on one A4 sheet</span><span class="ar" lang="ar">9 أو 4 بطاقات ثنائية اللغة في صفحة A4 واحدة</span></li>
+          <li><span class="en">recalibrated the 4-up template to true physical size</span><span class="ar" lang="ar">أعدتُ معايرة قالب البطاقات الأربع ليطبع بالمقاس الفعلي</span></li>
+        </ul>
         <footer class="win-foot">
-          <span class="lang-dot"><i style="--dot:#3572A5"></i>Python · Tkinter</span>
-          <span>Δt: 2 h → 15 min</span>
+          <span class="lang-dot"><i style="--dot:#3178c6"></i>TypeScript</span>
+          <span>role: continued an existing base</span>
+        </footer>
+      </div>
+    </article>
+
+    <article class="win w-c">
+      <header class="tbar">
+        <span class="tbar-glyph" aria-hidden="true">⎇</span>
+        <h3>alrugaib-delivery-ledger</h3>
+        <span class="tbar-controls" aria-hidden="true"><i>–</i><i>▢</i><i>×</i></span>
+      </header>
+      <div class="win-body">
+        <span class="badge badge-lock"><span class="en">Private · solo</span><span class="ar" lang="ar">خاص · عمل فردي</span></span>
+        <p><span class="en">A delivery board for management where no date is hardcoded. The schedule computes itself on a Sunday-to-Thursday Riyadh week, so finishing one task early pulls the whole plan in.</span>
+           <span class="ar" lang="ar">لوحة تسليم للإدارة لا يُثبَّت فيها أي تاريخ. يحسب الجدول نفسه على أسبوع عمل من الأحد إلى الخميس بتوقيت الرياض، فإنهاء مهمة مبكرًا يقدّم الخطة كاملة.</span></p>
+        <ul class="specs">
+          <li><span class="en">timing-safe passcode compare with a length-leak guard</span><span class="ar" lang="ar">مقارنة رمز دخول ثابتة الزمن مع حماية من تسريب الطول</span></li>
+          <li><span class="en">allow-list rebuild, hard payload caps, holds no real credentials</span><span class="ar" lang="ar">إعادة بناء بقائمة سماح، وحدود صارمة للحمولة، ولا يحتفظ بأي بيانات اعتماد حقيقية</span></li>
+        </ul>
+        <footer class="win-foot">
+          <span class="lang-dot"><i style="--dot:#f1e05a"></i>JavaScript</span>
+          <span>role: sole author</span>
         </footer>
       </div>
     </article>
@@ -1399,23 +1451,27 @@ html[data-theme="dark"] .phone{ box-shadow:var(--shadow), inset 0 0 0 5px #05060
     <article class="win w-d">
       <header class="tbar">
         <span class="tbar-glyph" aria-hidden="true">⎇</span>
-        <h3><a href="https://github.com/sa3d-zidouri-work" rel="noopener">personal-flutter-app</a></h3>
+        <h3><a href="https://github.com/saadzid/Class-Schedule-Manager" rel="noopener">Class-Schedule-Manager</a></h3>
         <span class="tbar-controls" aria-hidden="true"><i>–</i><i>▢</i><i>×</i></span>
       </header>
       <div class="win-body">
-        <span class="badge badge-wip"><span class="en">In progress</span><span class="ar" lang="ar">قيد التطوير</span></span>
-        <p><span class="en">Personal Flutter app in active development, headed for <b>Google Play and the App Store</b>. The sandbox where superapp lessons get distilled into something of my own.</span>
-           <span class="ar" lang="ar">تطبيق Flutter شخصي قيد التطوير النشط، في طريقه إلى <b>Google Play وApp Store</b>. مساحة أحوّل فيها دروس التطبيق الشامل إلى منتج خاص بي.</span></p>
+        <span class="badge"><span class="en">Public</span><span class="ar" lang="ar">عام</span></span>
+        <p><span class="en">Desktop room-scheduling tool for the KFUPM lab. It loads the course workbook, finds every room-time collision, and lets you drag a class block to a new slot.</span>
+           <span class="ar" lang="ar">أداة مكتبية لجدولة القاعات في مختبر الجامعة. تُحمّل ملف المقررات، وترصد كل تعارض بين قاعة ووقت، وتتيح سحب المحاضرة إلى موعد جديد.</span></p>
+        <ul class="specs">
+          <li><span class="en">drag to reschedule, snapping to 15-minute steps</span><span class="ar" lang="ar">السحب لإعادة الجدولة مع محاذاة كل 15 دقيقة</span></li>
+          <li><span class="en">conflicts render red · edits round-trip back to Excel</span><span class="ar" lang="ar">تظهر التعارضات بالأحمر · وتُحفظ التعديلات في ملف Excel</span></li>
+        </ul>
         <footer class="win-foot">
-          <span class="lang-dot"><i style="--dot:#00B4AB"></i>Dart · Flutter</span>
-          <span>target: both stores</span>
+          <span class="lang-dot"><i style="--dot:#3572A5"></i>Python · Tkinter</span>
+          <span>role: sole author</span>
         </footer>
       </div>
     </article>
 
     <p class="gh-note">
-      <span class="en">Star and commit counts deliberately unrecorded: numbers age, the source doesn't. Verify at <a href="https://github.com/sa3d-zidouri-work" rel="noopener" dir="ltr">github.com/sa3d-zidouri-work</a>.</span>
-      <span class="ar" lang="ar">أعداد النجوم والإيداعات غير مسجّلة عمدًا: الأرقام تتقادم أما المصدر فلا. تحقّق بنفسك عبر <a href="https://github.com/sa3d-zidouri-work" rel="noopener" dir="ltr">github.com/sa3d-zidouri-work</a>.</span>
+      <span class="en">Most of this work lives in private client and company repositories, so the source stays with them. The one public repo is linked above; the rest I can walk you through line by line. Profile: <a href="https://github.com/sa3d-zidouri-work" rel="noopener" dir="ltr">github.com/sa3d-zidouri-work</a>.</span>
+      <span class="ar" lang="ar">معظم هذا العمل في مستودعات خاصة بالعملاء والشركات، والشيفرة تبقى لديهم. المستودع العام الوحيد مرتبط أعلاه، وما تبقّى يسعدني استعراضه سطرًا بسطر. الحساب: <a href="https://github.com/sa3d-zidouri-work" rel="noopener" dir="ltr">github.com/sa3d-zidouri-work</a>.</span>
     </p>
   </div>
 </section>
@@ -1479,10 +1535,10 @@ html[data-theme="dark"] .phone{ box-shadow:var(--shadow), inset 0 0 0 5px #05060
 <div class="tl out">| toolset:</div>
 <div class="tl out">|_  Burp Suite · Wireshark · Metasploit · Nmap · Scapy · Packet Tracer</div>
 <div class="tl out"> </div>
-<div class="tl cmd"><span class="ps1">saad@recon:~$ </span><span class="typed">python3 recon.py --scope practice-lab --flag-exposed</span></div>
-<div class="tl out">[*] recon-automation-toolkit :: nmap workflows, automated</div>
-<div class="tl out">[*] sweeping authorized practice targets ......... done</div>
-<div class="tl ok">[+] exposed files/dirs flagged and reported — scope respected</div>
+<div class="tl cmd"><span class="ps1">saad@recon:~$ </span><span class="typed">git log --oneline --grep=security -- journey-joy/</span></div>
+<div class="tl out">[*] 21 security commits on a production ride-hailing platform</div>
+<div class="tl out">[*] MASTER_OTP backdoor removed · 2x IDOR · path traversal · Paymob HMAC</div>
+<div class="tl ok">[+] 43 customers' data purged from git history, rewrite verified</div>
 <div class="tl cmd"><span class="ps1">saad@recon:~$ </span><span class="cursor" aria-hidden="true"></span></div>
         </div>
       </div>

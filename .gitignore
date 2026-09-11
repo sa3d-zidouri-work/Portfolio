@@ -14,8 +14,13 @@ DESIGN.md
 .env
 .env.*
 node_modules/
+__pycache__/
 
 # Pasted screenshots land in assets/ by accident; real app art is committed
 # explicitly by name.
 assets/Pasted image*.png
 assets/Screenshot From*.png
+
+# unlazy gate-check state (machine-local)
+.unlazy/
+.unlazy-hook-state.json

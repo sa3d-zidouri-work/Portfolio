@@ -1,0 +1,351 @@
+"""Sheet design for the generated CVs: head, toolbar, header and markup patterns.
+
+The style block, font links and QR SVG below are lifted verbatim from the
+hand-built cv/merged.html so the generated pages keep the same design. Only
+`EXTRA_STYLE` is new: rules for the three elements the content model added
+(engagement line, org note, certificate verify link).
+
+build.py decides what goes on each CV; this module only knows how it looks.
+"""
+
+import html
+from urllib.parse import urlparse
+
+from content import CONTACT
+
+# One sentence per variant id, shown to search engines and link previews.
+DESCRIPTIONS = {
+    "merged": "Dual-track CV of Saad Zidouri: mobile software engineering and application security.",
+    "pentest": "Penetration testing CV of Saad Zidouri: web pentesting, bug bounty and application security.",
+    "appsec": "Application security CV of Saad Zidouri: secure development and application security.",
+    "software": "Software and mobile (Flutter) engineering CV of Saad Zidouri.",
+    "software-1page": "One-page software and mobile (Flutter) engineering CV of Saad Zidouri.",
+}
+
+FONTS = """<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">"""
+
+STYLE = """<style>
+:root{
+  --bg:#12141c; --ink:#e8eaf0; --amber:#eab35c; --cyan:#7fd8cd;
+  --paper:#ffffff; --pk:#1b1d24; --muted:#5b6270;
+  --paper-muted:#5c626d; --rule:#d6dae2; --rule-strong:#2b2f39;
+}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{background:#0d0e15;color:var(--ink);
+  font-family:"IBM Plex Sans",system-ui,-apple-system,Segoe UI,Arial,sans-serif;
+  line-height:1.5;-webkit-font-smoothing:antialiased;padding:0 16px}
+a{color:inherit}
+.mono{font-family:"IBM Plex Mono",ui-monospace,monospace}
+
+/* toolbar */
+.toolbar{position:sticky;top:0;z-index:20;max-width:860px;margin:0 auto;
+  display:flex;align-items:center;justify-content:space-between;gap:14px;
+  padding:14px 6px;backdrop-filter:blur(6px)}
+.toolbar .left{display:flex;align-items:center;gap:14px;min-width:0}
+.eyebrow{font-family:"IBM Plex Mono",monospace;font-size:11px;letter-spacing:2px;
+  text-transform:uppercase;color:var(--amber)}
+.back{font-family:"IBM Plex Mono",monospace;font-size:12px;color:var(--cyan);
+  text-decoration:none;white-space:nowrap}
+.back:hover{text-decoration:underline}
+.btn{font-family:"IBM Plex Mono",monospace;font-size:12.5px;letter-spacing:.4px;
+  border:1px solid var(--amber);color:#12141c;background:var(--amber);
+  padding:9px 15px;border-radius:8px;cursor:pointer;text-decoration:none;
+  display:inline-flex;align-items:center;gap:7px;transition:transform .15s ease,box-shadow .15s ease}
+.btn:hover{transform:translateY(-1px);box-shadow:0 6px 18px rgba(234,179,92,.28)}
+
+/* paper sheet */
+.sheet{background:var(--paper);color:var(--pk);max-width:820px;margin:8px auto 64px;
+  padding:46px 54px 50px;border-radius:8px;
+  box-shadow:0 24px 70px rgba(0,0,0,.55),0 0 0 1px rgba(255,255,255,.04)}
+
+/* header */
+.cv-head{display:flex;justify-content:space-between;align-items:flex-start;gap:24px;
+  border-bottom:2px solid var(--rule-strong);padding-bottom:14px}
+.cv-head .id h1{font-family:"Chakra Petch",sans-serif;font-weight:700;
+  font-size:31px;line-height:1.05;margin:0;letter-spacing:.4px;color:#14161d}
+.cv-head .subtitle{font-family:"Chakra Petch",sans-serif;font-weight:500;
+  font-size:14.5px;color:#3a4150;margin-top:4px;letter-spacing:.3px}
+.contact{margin-top:10px;font-family:"IBM Plex Mono",monospace;font-size:11.5px;
+  line-height:1.7;color:var(--paper-muted);font-style:normal}
+.contact a{color:var(--paper-muted);text-decoration:none}
+.contact a:hover{color:#14161d;text-decoration:underline}
+.contact .sep{opacity:.45;margin:0 7px}
+.qr{flex:0 0 auto;width:84px;height:84px;border:1px solid var(--rule);
+  border-radius:8px;padding:5px;background:#fff}
+.qr svg{display:block;width:100%;height:100%}
+.qr-cap{font-family:"IBM Plex Mono",monospace;font-size:8.5px;text-align:center;
+  color:var(--paper-muted);margin-top:3px;letter-spacing:.5px}
+.qr-wrap{flex:0 0 auto;text-align:center}
+
+/* sections */
+.section{margin-top:20px}
+.section h2{font-family:"IBM Plex Mono",monospace;font-size:12px;font-weight:500;
+  text-transform:uppercase;letter-spacing:2.5px;color:#2c313c;margin:0 0 9px;
+  padding-bottom:5px;border-bottom:1px solid var(--rule)}
+.summary{font-size:13.5px;line-height:1.55;color:#33383f;margin:0}
+
+.entry{margin-bottom:13px;break-inside:avoid;page-break-inside:avoid}
+.entry:last-child{margin-bottom:0}
+.entry-top{display:flex;justify-content:space-between;align-items:baseline;gap:12px}
+.entry .role{font-size:14.5px;font-weight:700;margin:0;color:#181a21;font-family:"IBM Plex Sans",sans-serif}
+.entry .period{font-family:"IBM Plex Mono",monospace;font-size:11px;color:var(--paper-muted);white-space:nowrap;flex:0 0 auto}
+.entry-sub{display:flex;justify-content:space-between;gap:12px;margin-top:1px}
+.entry .org{font-size:12.5px;font-weight:600;color:#414855}
+.entry .loc{font-family:"IBM Plex Mono",monospace;font-size:10.5px;color:var(--paper-muted);white-space:nowrap;flex:0 0 auto}
+.entry ul{margin:6px 0 0;padding-left:16px}
+.entry li{font-size:12.5px;line-height:1.45;margin-bottom:2px;color:#3a4049}
+.entry .k{font-weight:600;color:#2a2f39}
+
+.proj-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px 26px}
+.proj{margin-bottom:2px}
+.proj .tag{font-family:"IBM Plex Mono",monospace;font-size:9.5px;letter-spacing:.5px;
+  color:#6a7180;text-transform:uppercase;white-space:nowrap;flex:0 0 auto}
+.proj .role{font-size:13px}
+.proj p{margin:3px 0 0;font-size:11.8px;line-height:1.42;color:#454b55}
+
+.skills{margin:0}
+.skill-row{display:grid;grid-template-columns:126px 1fr;gap:12px;padding:2.5px 0;
+  border-bottom:1px dotted #e6e9ef}
+.skill-row:last-child{border-bottom:0}
+.skills dt{font-weight:700;font-size:12px;color:#20242c}
+.skills dd{margin:0;font-size:12px;line-height:1.42;color:#3f4550}
+
+.certs{margin:0;padding-left:16px}
+.certs li{font-size:12.5px;line-height:1.45;margin-bottom:2px;color:#3a4049}
+
+.langs{font-size:12.5px;color:#3a4049;margin:0}
+
+@media (prefers-reduced-motion: reduce){*{animation:none!important;transition:none!important}}
+
+/* small screens */
+@media (max-width:640px){
+  body{padding:0 10px}
+  .sheet{padding:30px 22px 34px;border-radius:6px}
+  .cv-head{flex-direction:column-reverse;align-items:flex-start;gap:14px}
+  .qr-wrap{align-self:flex-start}
+  .cv-head .id h1{font-size:26px}
+  .entry-top,.entry-sub{flex-direction:column;gap:1px}
+  .entry .period,.entry .loc{white-space:normal}
+  .proj-grid{grid-template-columns:1fr}
+  .skill-row{grid-template-columns:1fr;gap:1px}
+  .toolbar{flex-wrap:wrap}
+}
+
+/* ================= PRINT ================= */
+@media print{
+  @page{size:A4;margin:11mm 12mm}
+  html,body{background:#fff!important;color:#000!important;padding:0!important}
+  .toolbar,.screen-only{display:none!important}
+  .sheet{max-width:none;margin:0;padding:0;border-radius:0;box-shadow:none;
+    background:#fff;color:#000;font-size:9.6pt}
+  .cv-head{border-bottom:1.4pt solid #000;padding-bottom:6pt}
+  .cv-head .id h1{font-size:19pt;color:#000}
+  .cv-head .subtitle{font-size:10pt;color:#222;margin-top:2pt}
+  .contact{margin-top:5pt;font-size:8.2pt;line-height:1.5}
+  .contact,.contact a{color:#333!important}
+  .qr{width:64px;height:64px;border-color:#bbb}
+  .qr-cap{font-size:6.4pt;margin-top:2px}
+  .section{margin-top:8.5pt}
+  .section h2{font-size:9pt;color:#000;letter-spacing:1.8pt;border-bottom:.75pt solid #999;
+    margin-bottom:4.5pt;padding-bottom:2.5pt}
+  .summary{font-size:9.4pt;line-height:1.42;color:#111}
+  .entry{margin-bottom:7pt;page-break-inside:avoid;break-inside:avoid}
+  .entry .role{font-size:10.2pt;color:#000}
+  .entry .org{color:#222;font-size:9pt}
+  .entry .period,.entry .loc,.proj .tag,.qr-cap{color:#444!important}
+  .entry .period{font-size:8.2pt}
+  .entry .loc{font-size:8pt}
+  .entry ul{margin-top:3pt;padding-left:12pt}
+  .entry li,.certs li,.skills dd,.langs,.proj p{font-size:9pt;line-height:1.36;color:#111}
+  .entry li,.certs li{margin-bottom:1.2pt}
+  .proj-grid{gap:6pt 20pt}
+  .proj .role{font-size:9.4pt}
+  .proj .tag{font-size:7pt}
+  .proj p{font-size:8.6pt;margin-top:1.5pt}
+  .skills dt{color:#000;font-size:9pt}
+  .skill-row{border-bottom:.5pt dotted #ccc;padding:1.6pt 0;grid-template-columns:104px 1fr}
+  a{color:#000!important;text-decoration:none}
+}
+
+/* ===== one-page variant: tighter, still comfortably legible ===== */
+@media print{
+  body.one .sheet{font-size:9.2pt}
+  body.one .cv-head{padding-bottom:5pt}
+  body.one .cv-head .id h1{font-size:17.5pt}
+  body.one .cv-head .subtitle{font-size:9.4pt}
+  body.one .contact{margin-top:4pt;font-size:7.8pt;line-height:1.45}
+  body.one .qr{width:56px;height:56px}
+  body.one .section{margin-top:6.6pt}
+  body.one .section h2{font-size:8.4pt;margin-bottom:3.6pt;padding-bottom:2pt;letter-spacing:1.5pt}
+  body.one .summary{font-size:8.9pt;line-height:1.38}
+  body.one .entry{margin-bottom:5pt}
+  body.one .entry .role{font-size:9.6pt}
+  body.one .entry .org{font-size:8.5pt}
+  body.one .entry ul{margin-top:2.4pt}
+  body.one .entry li,body.one .certs li,body.one .skills dd,body.one .langs{font-size:8.6pt;line-height:1.33}
+  body.one .skills dt{font-size:8.6pt}
+  body.one .skill-row{padding:1.2pt 0}
+  body.one .proj .role{font-size:9pt}
+  body.one .proj p{font-size:8.3pt}
+}
+</style>"""
+
+EXTRA_STYLE = """<style>
+/* generator additions: role engagement line, org note, cert verify link */
+.entry .org-note{font-weight:400}
+.entry .engagement{font-family:"IBM Plex Mono",monospace;font-size:10.5px;line-height:1.5;
+  color:var(--paper-muted);margin:2px 0 0}
+.certs .verify{font-family:"IBM Plex Mono",monospace;font-size:10.5px;color:var(--paper-muted);
+  text-decoration:none;margin-left:4px;white-space:nowrap}
+.certs .verify:hover{text-decoration:underline}
+@media print{
+  .entry .engagement{font-size:8pt;color:#444!important;margin-top:1.5pt}
+  .certs .verify{font-size:8pt;color:#444!important}
+  /* a section heading never sits alone at the foot of a page */
+  .section h2{break-after:avoid;page-break-after:avoid}
+  .section h2 + .entry,.section h2 + .summary,.section h2 + .certs,.section h2 + .langs{break-before:avoid;page-break-before:avoid}
+}
+</style>"""
+
+QR_SVG = """<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 37 37" width="100%" height="100%" shape-rendering="crispEdges" role="img" aria-label="QR code linking to @@HOST@@"><rect width="37" height="37" fill="#ffffff"/><path d="M2,2h1v1h-1zM3,2h1v1h-1zM4,2h1v1h-1zM5,2h1v1h-1zM6,2h1v1h-1zM7,2h1v1h-1zM8,2h1v1h-1zM10,2h1v1h-1zM13,2h1v1h-1zM14,2h1v1h-1zM16,2h1v1h-1zM20,2h1v1h-1zM21,2h1v1h-1zM22,2h1v1h-1zM25,2h1v1h-1zM28,2h1v1h-1zM29,2h1v1h-1zM30,2h1v1h-1zM31,2h1v1h-1zM32,2h1v1h-1zM33,2h1v1h-1zM34,2h1v1h-1zM2,3h1v1h-1zM8,3h1v1h-1zM10,3h1v1h-1zM16,3h1v1h-1zM18,3h1v1h-1zM19,3h1v1h-1zM23,3h1v1h-1zM24,3h1v1h-1zM25,3h1v1h-1zM28,3h1v1h-1zM34,3h1v1h-1zM2,4h1v1h-1zM4,4h1v1h-1zM5,4h1v1h-1zM6,4h1v1h-1zM8,4h1v1h-1zM11,4h1v1h-1zM12,4h1v1h-1zM14,4h1v1h-1zM15,4h1v1h-1zM16,4h1v1h-1zM20,4h1v1h-1zM22,4h1v1h-1zM24,4h1v1h-1zM25,4h1v1h-1zM26,4h1v1h-1zM28,4h1v1h-1zM30,4h1v1h-1zM31,4h1v1h-1zM32,4h1v1h-1zM34,4h1v1h-1zM2,5h1v1h-1zM4,5h1v1h-1zM5,5h1v1h-1zM6,5h1v1h-1zM8,5h1v1h-1zM10,5h1v1h-1zM11,5h1v1h-1zM12,5h1v1h-1zM20,5h1v1h-1zM21,5h1v1h-1zM24,5h1v1h-1zM26,5h1v1h-1zM28,5h1v1h-1zM30,5h1v1h-1zM31,5h1v1h-1zM32,5h1v1h-1zM34,5h1v1h-1zM2,6h1v1h-1zM4,6h1v1h-1zM5,6h1v1h-1zM6,6h1v1h-1zM8,6h1v1h-1zM11,6h1v1h-1zM18,6h1v1h-1zM19,6h1v1h-1zM20,6h1v1h-1zM23,6h1v1h-1zM28,6h1v1h-1zM30,6h1v1h-1zM31,6h1v1h-1zM32,6h1v1h-1zM34,6h1v1h-1zM2,7h1v1h-1zM8,7h1v1h-1zM11,7h1v1h-1zM14,7h1v1h-1zM15,7h1v1h-1zM16,7h1v1h-1zM17,7h1v1h-1zM18,7h1v1h-1zM20,7h1v1h-1zM23,7h1v1h-1zM26,7h1v1h-1zM28,7h1v1h-1zM34,7h1v1h-1zM2,8h1v1h-1zM3,8h1v1h-1zM4,8h1v1h-1zM5,8h1v1h-1zM6,8h1v1h-1zM7,8h1v1h-1zM8,8h1v1h-1zM10,8h1v1h-1zM12,8h1v1h-1zM14,8h1v1h-1zM16,8h1v1h-1zM18,8h1v1h-1zM20,8h1v1h-1zM22,8h1v1h-1zM24,8h1v1h-1zM26,8h1v1h-1zM28,8h1v1h-1zM29,8h1v1h-1zM30,8h1v1h-1zM31,8h1v1h-1zM32,8h1v1h-1zM33,8h1v1h-1zM34,8h1v1h-1zM10,9h1v1h-1zM12,9h1v1h-1zM17,9h1v1h-1zM18,9h1v1h-1zM19,9h1v1h-1zM21,9h1v1h-1zM24,9h1v1h-1zM25,9h1v1h-1zM2,10h1v1h-1zM4,10h1v1h-1zM5,10h1v1h-1zM7,10h1v1h-1zM8,10h1v1h-1zM9,10h1v1h-1zM13,10h1v1h-1zM14,10h1v1h-1zM16,10h1v1h-1zM17,10h1v1h-1zM18,10h1v1h-1zM19,10h1v1h-1zM20,10h1v1h-1zM23,10h1v1h-1zM25,10h1v1h-1zM28,10h1v1h-1zM31,10h1v1h-1zM33,10h1v1h-1zM34,10h1v1h-1zM2,11h1v1h-1zM3,11h1v1h-1zM11,11h1v1h-1zM12,11h1v1h-1zM15,11h1v1h-1zM19,11h1v1h-1zM21,11h1v1h-1zM22,11h1v1h-1zM23,11h1v1h-1zM25,11h1v1h-1zM28,11h1v1h-1zM29,11h1v1h-1zM31,11h1v1h-1zM32,11h1v1h-1zM34,11h1v1h-1zM2,12h1v1h-1zM4,12h1v1h-1zM5,12h1v1h-1zM6,12h1v1h-1zM8,12h1v1h-1zM10,12h1v1h-1zM11,12h1v1h-1zM12,12h1v1h-1zM15,12h1v1h-1zM20,12h1v1h-1zM22,12h1v1h-1zM25,12h1v1h-1zM28,12h1v1h-1zM29,12h1v1h-1zM30,12h1v1h-1zM31,12h1v1h-1zM34,12h1v1h-1zM5,13h1v1h-1zM9,13h1v1h-1zM10,13h1v1h-1zM14,13h1v1h-1zM17,13h1v1h-1zM19,13h1v1h-1zM26,13h1v1h-1zM29,13h1v1h-1zM31,13h1v1h-1zM34,13h1v1h-1zM3,14h1v1h-1zM4,14h1v1h-1zM6,14h1v1h-1zM8,14h1v1h-1zM12,14h1v1h-1zM13,14h1v1h-1zM16,14h1v1h-1zM18,14h1v1h-1zM22,14h1v1h-1zM24,14h1v1h-1zM27,14h1v1h-1zM29,14h1v1h-1zM30,14h1v1h-1zM31,14h1v1h-1zM3,15h1v1h-1zM5,15h1v1h-1zM6,15h1v1h-1zM7,15h1v1h-1zM9,15h1v1h-1zM12,15h1v1h-1zM14,15h1v1h-1zM16,15h1v1h-1zM19,15h1v1h-1zM22,15h1v1h-1zM23,15h1v1h-1zM24,15h1v1h-1zM26,15h1v1h-1zM29,15h1v1h-1zM32,15h1v1h-1zM33,15h1v1h-1zM2,16h1v1h-1zM3,16h1v1h-1zM5,16h1v1h-1zM7,16h1v1h-1zM8,16h1v1h-1zM9,16h1v1h-1zM11,16h1v1h-1zM13,16h1v1h-1zM14,16h1v1h-1zM20,16h1v1h-1zM21,16h1v1h-1zM22,16h1v1h-1zM26,16h1v1h-1zM28,16h1v1h-1zM32,16h1v1h-1zM2,17h1v1h-1zM7,17h1v1h-1zM17,17h1v1h-1zM23,17h1v1h-1zM26,17h1v1h-1zM27,17h1v1h-1zM28,17h1v1h-1zM29,17h1v1h-1zM31,17h1v1h-1zM32,17h1v1h-1zM3,18h1v1h-1zM4,18h1v1h-1zM8,18h1v1h-1zM10,18h1v1h-1zM12,18h1v1h-1zM13,18h1v1h-1zM14,18h1v1h-1zM15,18h1v1h-1zM16,18h1v1h-1zM20,18h1v1h-1zM23,18h1v1h-1zM24,18h1v1h-1zM25,18h1v1h-1zM26,18h1v1h-1zM27,18h1v1h-1zM28,18h1v1h-1zM30,18h1v1h-1zM32,18h1v1h-1zM2,19h1v1h-1zM3,19h1v1h-1zM6,19h1v1h-1zM10,19h1v1h-1zM12,19h1v1h-1zM15,19h1v1h-1zM16,19h1v1h-1zM17,19h1v1h-1zM22,19h1v1h-1zM24,19h1v1h-1zM25,19h1v1h-1zM26,19h1v1h-1zM28,19h1v1h-1zM30,19h1v1h-1zM31,19h1v1h-1zM33,19h1v1h-1zM34,19h1v1h-1zM2,20h1v1h-1zM3,20h1v1h-1zM6,20h1v1h-1zM7,20h1v1h-1zM8,20h1v1h-1zM9,20h1v1h-1zM10,20h1v1h-1zM13,20h1v1h-1zM16,20h1v1h-1zM17,20h1v1h-1zM18,20h1v1h-1zM20,20h1v1h-1zM23,20h1v1h-1zM26,20h1v1h-1zM28,20h1v1h-1zM29,20h1v1h-1zM30,20h1v1h-1zM32,20h1v1h-1zM33,20h1v1h-1zM2,21h1v1h-1zM4,21h1v1h-1zM7,21h1v1h-1zM11,21h1v1h-1zM12,21h1v1h-1zM15,21h1v1h-1zM17,21h1v1h-1zM18,21h1v1h-1zM19,21h1v1h-1zM20,21h1v1h-1zM22,21h1v1h-1zM27,21h1v1h-1zM28,21h1v1h-1zM30,21h1v1h-1zM33,21h1v1h-1zM34,21h1v1h-1zM3,22h1v1h-1zM4,22h1v1h-1zM5,22h1v1h-1zM7,22h1v1h-1zM8,22h1v1h-1zM10,22h1v1h-1zM11,22h1v1h-1zM12,22h1v1h-1zM13,22h1v1h-1zM15,22h1v1h-1zM16,22h1v1h-1zM17,22h1v1h-1zM18,22h1v1h-1zM21,22h1v1h-1zM23,22h1v1h-1zM29,22h1v1h-1zM31,22h1v1h-1zM32,22h1v1h-1zM33,22h1v1h-1zM2,23h1v1h-1zM3,23h1v1h-1zM4,23h1v1h-1zM5,23h1v1h-1zM6,23h1v1h-1zM7,23h1v1h-1zM10,23h1v1h-1zM13,23h1v1h-1zM16,23h1v1h-1zM17,23h1v1h-1zM18,23h1v1h-1zM22,23h1v1h-1zM24,23h1v1h-1zM25,23h1v1h-1zM28,23h1v1h-1zM31,23h1v1h-1zM32,23h1v1h-1zM34,23h1v1h-1zM4,24h1v1h-1zM5,24h1v1h-1zM8,24h1v1h-1zM9,24h1v1h-1zM11,24h1v1h-1zM13,24h1v1h-1zM14,24h1v1h-1zM17,24h1v1h-1zM21,24h1v1h-1zM22,24h1v1h-1zM25,24h1v1h-1zM26,24h1v1h-1zM28,24h1v1h-1zM30,24h1v1h-1zM33,24h1v1h-1zM34,24h1v1h-1zM3,25h1v1h-1zM4,25h1v1h-1zM5,25h1v1h-1zM12,25h1v1h-1zM15,25h1v1h-1zM17,25h1v1h-1zM20,25h1v1h-1zM22,25h1v1h-1zM25,25h1v1h-1zM26,25h1v1h-1zM27,25h1v1h-1zM29,25h1v1h-1zM31,25h1v1h-1zM2,26h1v1h-1zM6,26h1v1h-1zM8,26h1v1h-1zM10,26h1v1h-1zM12,26h1v1h-1zM14,26h1v1h-1zM15,26h1v1h-1zM19,26h1v1h-1zM21,26h1v1h-1zM22,26h1v1h-1zM24,26h1v1h-1zM26,26h1v1h-1zM27,26h1v1h-1zM28,26h1v1h-1zM29,26h1v1h-1zM30,26h1v1h-1zM31,26h1v1h-1zM10,27h1v1h-1zM11,27h1v1h-1zM12,27h1v1h-1zM14,27h1v1h-1zM17,27h1v1h-1zM18,27h1v1h-1zM20,27h1v1h-1zM21,27h1v1h-1zM26,27h1v1h-1zM30,27h1v1h-1zM31,27h1v1h-1zM33,27h1v1h-1zM2,28h1v1h-1zM3,28h1v1h-1zM4,28h1v1h-1zM5,28h1v1h-1zM6,28h1v1h-1zM7,28h1v1h-1zM8,28h1v1h-1zM10,28h1v1h-1zM12,28h1v1h-1zM19,28h1v1h-1zM20,28h1v1h-1zM21,28h1v1h-1zM22,28h1v1h-1zM24,28h1v1h-1zM25,28h1v1h-1zM26,28h1v1h-1zM28,28h1v1h-1zM30,28h1v1h-1zM33,28h1v1h-1zM2,29h1v1h-1zM8,29h1v1h-1zM10,29h1v1h-1zM13,29h1v1h-1zM14,29h1v1h-1zM16,29h1v1h-1zM17,29h1v1h-1zM19,29h1v1h-1zM20,29h1v1h-1zM22,29h1v1h-1zM23,29h1v1h-1zM25,29h1v1h-1zM26,29h1v1h-1zM30,29h1v1h-1zM31,29h1v1h-1zM32,29h1v1h-1zM33,29h1v1h-1zM34,29h1v1h-1zM2,30h1v1h-1zM4,30h1v1h-1zM5,30h1v1h-1zM6,30h1v1h-1zM8,30h1v1h-1zM16,30h1v1h-1zM17,30h1v1h-1zM18,30h1v1h-1zM19,30h1v1h-1zM20,30h1v1h-1zM21,30h1v1h-1zM22,30h1v1h-1zM23,30h1v1h-1zM25,30h1v1h-1zM26,30h1v1h-1zM27,30h1v1h-1zM28,30h1v1h-1zM29,30h1v1h-1zM30,30h1v1h-1zM32,30h1v1h-1zM34,30h1v1h-1zM2,31h1v1h-1zM4,31h1v1h-1zM5,31h1v1h-1zM6,31h1v1h-1zM8,31h1v1h-1zM10,31h1v1h-1zM13,31h1v1h-1zM16,31h1v1h-1zM18,31h1v1h-1zM21,31h1v1h-1zM23,31h1v1h-1zM24,31h1v1h-1zM25,31h1v1h-1zM26,31h1v1h-1zM29,31h1v1h-1zM34,31h1v1h-1zM2,32h1v1h-1zM4,32h1v1h-1zM5,32h1v1h-1zM6,32h1v1h-1zM8,32h1v1h-1zM10,32h1v1h-1zM12,32h1v1h-1zM13,32h1v1h-1zM14,32h1v1h-1zM15,32h1v1h-1zM16,32h1v1h-1zM17,32h1v1h-1zM18,32h1v1h-1zM22,32h1v1h-1zM24,32h1v1h-1zM25,32h1v1h-1zM28,32h1v1h-1zM29,32h1v1h-1zM32,32h1v1h-1zM2,33h1v1h-1zM8,33h1v1h-1zM11,33h1v1h-1zM12,33h1v1h-1zM13,33h1v1h-1zM15,33h1v1h-1zM19,33h1v1h-1zM21,33h1v1h-1zM24,33h1v1h-1zM26,33h1v1h-1zM27,33h1v1h-1zM29,33h1v1h-1zM30,33h1v1h-1zM31,33h1v1h-1zM34,33h1v1h-1zM2,34h1v1h-1zM3,34h1v1h-1zM4,34h1v1h-1zM5,34h1v1h-1zM6,34h1v1h-1zM7,34h1v1h-1zM8,34h1v1h-1zM10,34h1v1h-1zM11,34h1v1h-1zM12,34h1v1h-1zM14,34h1v1h-1zM15,34h1v1h-1zM18,34h1v1h-1zM19,34h1v1h-1zM20,34h1v1h-1zM23,34h1v1h-1zM24,34h1v1h-1zM25,34h1v1h-1zM27,34h1v1h-1zM30,34h1v1h-1zM32,34h1v1h-1z" fill="#12141c"/></svg>"""
+
+
+def esc(text):
+    """Escape content text: & < > become entities, quotes stay literal."""
+    return html.escape(text, quote=False)
+
+
+def head(variant):
+    return (
+        "<!DOCTYPE html>\n"
+        '<html lang="en">\n'
+        "<head>\n"
+        '<meta charset="UTF-8">\n'
+        '<meta name="viewport" content="width=device-width, initial-scale=1.0">\n'
+        f"<title>{esc(variant['title'])} | {esc(CONTACT['name'])}</title>\n"
+        f'<meta name="description" content="{esc(DESCRIPTIONS[variant["id"]])}">\n'
+        f"{FONTS}\n"
+        f"{STYLE}\n"
+        f"{EXTRA_STYLE}\n"
+        "</head>\n"
+    )
+
+
+def toolbar(variant):
+    return (
+        '<nav class="toolbar" aria-label="CV actions">\n'
+        '  <div class="left">\n'
+        '    <a class="back" href="./index.html">← All CVs</a>\n'
+        f'    <span class="eyebrow">{esc(variant["eyebrow"])}</span>\n'
+        "  </div>\n"
+        f'  <a class="btn" href="{variant["file"]}.pdf" download>Download PDF ⤓</a>\n'
+        "</nav>\n"
+    )
+
+
+def cv_head(variant):
+    c = CONTACT
+    host = urlparse(c["site"]).netloc
+    return (
+        '<header class="cv-head">\n'
+        '  <div class="id">\n'
+        f"    <h1>{esc(c['name'])}</h1>\n"
+        f'    <div class="subtitle">{esc(variant["subtitle"])}</div>\n'
+        '    <address class="contact">\n'
+        f'  <a href="{c["phone_href"]}">{esc(c["phone"])}</a><span class="sep">·</span>'
+        f'<a href="mailto:{c["email"]}">{esc(c["email"])}</a><br>\n'
+        f'  <a href="https://{c["linkedin"]}" target="_blank" rel="noopener">{esc(c["linkedin"])}</a><span class="sep">·</span>'
+        f'<a href="https://{c["github"]}" target="_blank" rel="noopener">{esc(c["github"])}</a><br>\n'
+        f"  {esc(c['location'])}\n"
+        "</address>\n"
+        "  </div>\n"
+        '  <div class="qr-wrap">\n'
+        f'    <div class="qr">{QR_SVG.replace("@@HOST@@", esc(host))}</div>\n'
+        '    <div class="qr-cap">SCAN → PORTFOLIO</div>\n'
+        "  </div>\n"
+        "</header>\n"
+    )
+
+
+def page(variant, sections_html):
+    body_open = '<body class="one">' if variant.get("one_page") else "<body>"
+    return (
+        head(variant)
+        + body_open + "\n"
+        + toolbar(variant)
+        + '<main class="sheet" role="document">\n'
+        + cv_head(variant)
+        + sections_html
+        + "</main>\n"
+        "</body>\n"
+        "</html>\n"
+    )
+
+
+# ----- markup patterns ------------------------------------------------------
+
+def section(key, heading, inner):
+    return (
+        f'<section class="section" aria-labelledby="h-{key}">\n'
+        f'  <h2 id="h-{key}">{esc(heading)}</h2>\n'
+        f"{inner}\n"
+        "</section>\n"
+    )
+
+
+def bullets(items):
+    """items are already-rendered <li> inner HTML strings."""
+    return "<ul>" + "".join(f"<li>{it}</li>" for it in items) + "</ul>"
+
+
+def entry(title, period, org, loc, items, org_note=None, engagement=None):
+    org_html = esc(org)
+    if org_note:
+        org_html += f' · <span class="org-note">{esc(org_note)}</span>'
+    out = (
+        '<article class="entry">\n'
+        f'  <div class="entry-top"><h3 class="role">{esc(title)}</h3><span class="period">{esc(period)}</span></div>\n'
+        f'  <div class="entry-sub"><span class="org">{org_html}</span><span class="loc">{esc(loc)}</span></div>\n'
+    )
+    if engagement:
+        out += f'  <p class="engagement">{esc(engagement)}</p>\n'
+    out += f"  {bullets(items)}\n</article>"
+    return out
+
+
+def project(title, tag, text):
+    return (
+        '<article class="entry proj">\n'
+        f'  <div class="entry-top"><h3 class="role">{esc(title)}</h3><span class="tag">{esc(tag)}</span></div>\n'
+        f"  <p>{esc(text)}</p>\n"
+        "</article>"
+    )
+
+
+def project_grid(cards):
+    return '  <div class="proj-grid">' + "\n".join(cards) + "</div>"
+
+
+def skills(rows):
+    cells = "".join(
+        f'<div class="skill-row"><dt>{esc(dt)}</dt><dd>{esc(dd)}</dd></div>' for dt, dd in rows
+    )
+    return f'  <dl class="skills">{cells}</dl>'
+
+
+def certs(items):
+    """items are already-rendered <li> inner HTML strings."""
+    return '  <ul class="certs">\n' + "".join(f"  <li>{it}</li>\n" for it in items) + "</ul>"
+
+
+def verify_link(url):
+    u = urlparse(url)
+    short = f"{u.netloc}/{u.path.strip('/')[:8]}…"
+    return f'<a class="verify" href="{url}" target="_blank" rel="noopener">verify: {esc(short)}</a>'
+
+
+def paragraph(cls, inner):
+    return f'  <p class="{cls}">{inner}</p>'

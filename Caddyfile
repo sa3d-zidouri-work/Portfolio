@@ -26,7 +26,10 @@
 	# `handle` blocks are used because they evaluate in written order. With bare
 	# `respond`, Caddy's default directive order runs try_files first, which
 	# rewrites /Caddyfile to /index.html before the deny matcher ever sees it.
-	@hidden path /Caddyfile /Dockerfile /.dockerignore /.env /.env.* /.git /.git/* /*.md
+	#
+	# /cv/src holds the CV generator and its content source; only the generated
+	# cv/*.html and cv/*.pdf are public.
+	@hidden path /Caddyfile /Dockerfile /.dockerignore /.env /.env.* /.git /.git/* /*.md /cv/src /cv/src/*
 	handle @hidden {
 		respond 404
 	}

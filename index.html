@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Saad Zidouri — Mobile Software &amp; Security</title>
-<meta name="description" content="Saad Zidouri — Computer Engineering senior at KFUPM. Builds production mobile software (Flutter superapp used by 300+ staff) and tests its security (eJPTv2).">
+<title>Saad Zidouri | Mobile Software &amp; Security</title>
+<meta name="description" content="Saad Zidouri, Computer Engineering senior at KFUPM (Dec 2026): Flutter and full-stack developer for a production sales superapp and a ride-hailing platform, eJPTv2 certified, bug-bounty and web-pentest practice. CVs and contact.">
 <script>
 /* pre-paint restore: no flash of wrong theme or language.
    default = dark; first visit respects prefers-color-scheme; choice persists. */
@@ -277,11 +277,19 @@ html[data-lang="ar"] .hero-links a{font-family:var(--f-ar);letter-spacing:0}
   backdrop-filter:blur(3px);white-space:nowrap;pointer-events:none;
 }
 .float-chip b{color:var(--signal);font-weight:600}
-.fc1{top:.4rem;inset-inline-start:-.5rem}
-.fc2{top:24%;inset-inline-start:calc(100% - 3.1rem)}
-.fc3{top:39%;inset-inline-end:calc(100% - 1.5rem)}
-/* RTL: the phone column sits at the viewport edge — keep chips on the open side */
-html[data-lang="ar"] .fc3{inset-inline-end:auto;inset-inline-start:calc(100% - 3.1rem)}
+/* chips stay inside the stage box: they may overlap the phone, never the copy */
+.fc1{top:.4rem;inset-inline-start:0}
+/* the two app-fact chips live in flow under the phone controls: no absolute
+   positioning, so they cannot cover the phone or the hero copy at any width */
+.phone-chips{position:relative;z-index:1;display:flex;flex-wrap:wrap;justify-content:center;
+  gap:.55rem;margin-top:.9rem}
+.stage-chip{
+  font-family:var(--f-mono);font-size:.82rem;letter-spacing:.08em;
+  color:var(--muted);background:color-mix(in oklab, var(--card) 82%, transparent);
+  border:1px solid var(--line);border-radius:.4rem;padding:.3rem .65rem;white-space:nowrap;
+}
+.stage-chip b{color:var(--signal);font-weight:600}
+html[data-lang="ar"] .stage-chip{font-family:var(--f-ar);letter-spacing:0}
 
 .phone-tilt{position:relative;z-index:1;transform-style:preserve-3d;will-change:transform}
 .phone-tilt.auto{animation:phone-sway 10s ease-in-out infinite}
@@ -290,19 +298,20 @@ html[data-lang="ar"] .fc3{inset-inline-end:auto;inset-inline-start:calc(100% - 3
   50%{transform:rotateY(5deg) rotateX(-1.6deg)}
 }
 .phone{
-  margin:0;width:clamp(300px,23vw,430px);aspect-ratio:9/19.1;
+  margin:0;width:clamp(300px,23vw,430px);height:auto;
   border-radius:46px;
   background:#0b0d13;
   border:2px solid color-mix(in oklab, var(--line) 70%, #000);
   box-shadow:var(--shadow), inset 0 0 0 5px #05060a;
   padding:14px;position:relative;
 }
-.phone::before{ /* speaker/camera pill */
-  content:"";position:absolute;top:22px;left:50%;transform:translateX(-50%);
-  width:26%;height:22px;border-radius:999px;background:#05060a;z-index:3;
+.phone::before{ /* thin speaker line inside the bezel, clear of the screen */
+  content:"";position:absolute;top:5px;left:50%;transform:translateX(-50%);
+  width:22%;height:4px;border-radius:999px;background:#05060a;z-index:3;
 }
 .phone-screens{
-  position:absolute;inset:14px;border-radius:34px;overflow:hidden;background:#f4f6f8;
+  position:relative;width:100%;aspect-ratio:406/871; /* the real screenshot ratio: shown uncropped */
+  border-radius:34px;overflow:hidden;background:#f4f6f8;
   touch-action:pan-y;
 }
 .pscreen{
@@ -343,6 +352,7 @@ html[data-lang="ar"] .phone-pause{font-family:var(--f-ar)}
 }
 html[data-lang="ar"] .facts{font-family:var(--f-ar);letter-spacing:0}
 .facts b{color:var(--signal);font-weight:600}
+@media (max-width:1600px){.facts{font-size:.98rem;gap:.5rem 1.6rem}}
 
 /* ==================== section scaffolding ==================== */
 .section{padding:clamp(3.5rem,7vh,6.5rem) var(--px);scroll-margin-top:4.5rem}
@@ -408,9 +418,11 @@ html[data-lang="ar"] .xp-when{font-family:var(--f-ar)}
   font-size:clamp(1.35rem,1.15rem + .6vw,1.7rem);letter-spacing:-.01em;line-height:1.2;
 }
 .xp-org{margin-top:.35rem;color:var(--accent);font-weight:600;font-size:1.15rem}
+.xp-org + .xp-org{margin-top:.2rem;color:var(--muted);font-weight:500;font-size:1.05rem}
+.nowrap{white-space:nowrap}
 .xp ul{margin-top:1rem;list-style:none;display:grid;gap:.55rem;max-width:75ch}
 .xp li{padding-inline-start:1.4rem;position:relative;color:var(--muted)}
-.xp li::before{content:"—";position:absolute;inset-inline-start:0;color:var(--signal)}
+.xp li::before{content:"";position:absolute;inset-inline-start:0;top:0;height:1.62em;width:.7em;background:linear-gradient(var(--signal),var(--signal)) center/100% 1px no-repeat}
 .xp li b{color:var(--ink);font-weight:600}
 .xp-note{
   font-family:var(--f-mono);font-size:.9rem;letter-spacing:.06em;text-transform:uppercase;
@@ -492,11 +504,12 @@ html[data-lang="ar"] .badge{font-family:var(--f-ar);letter-spacing:0;text-transf
 .specs{list-style:none;display:grid;gap:.5rem;font-family:var(--f-mono);font-size:1.05rem}
 html[data-lang="ar"] .specs{font-family:var(--f-ar)}
 .specs li{padding-inline-start:1.3rem;position:relative;color:var(--ink)}
-.specs li::before{content:"—";position:absolute;inset-inline-start:0;color:var(--signal)}
+.specs li::before{content:"";position:absolute;inset-inline-start:0;top:0;height:1.62em;width:.7em;background:linear-gradient(var(--signal),var(--signal)) center/100% 1px no-repeat}
 .win-foot{
   margin-top:auto;display:flex;gap:1.2rem;align-items:center;flex-wrap:wrap;
   font-family:var(--f-mono);font-size:.92rem;color:var(--muted);direction:ltr;
 }
+.win-foot > span:last-child{flex:1;min-width:0;text-align:end}
 .lang-dot{display:inline-flex;align-items:center;gap:.45rem}
 .lang-dot i{width:.68rem;height:.68rem;border-radius:50%;background:var(--dot,#888)}
 .gh-note{
@@ -543,7 +556,7 @@ html[data-lang="ar"] .creds{font-family:var(--f-ar)}
   padding:1.25rem 1.35rem 1.5rem;font-family:var(--f-mono);
   font-size:1.12rem;line-height:1.8;overflow-x:auto;min-height:26rem;
 }
-.tl{white-space:pre;min-height:1.55em}
+.tl{white-space:pre-wrap;overflow-wrap:anywhere;min-height:1.55em}
 .tl .ps1{color:var(--term-ok)}
 .tl .typed{color:var(--term-ink)}
 .tl.out{color:var(--term-dim)}
@@ -554,8 +567,6 @@ html[data-lang="ar"] .creds{font-family:var(--f-ar)}
 .cursor{display:inline-block;width:.6em;height:1.1em;background:var(--term-hot);vertical-align:text-bottom;
   animation:blink 1.1s steps(1) infinite}
 @keyframes blink{50%{opacity:0}}
-.term-note{margin-top:.9rem;font-family:var(--f-mono);font-size:.92rem;color:var(--muted)}
-html[data-lang="ar"] .term-note{font-family:var(--f-ar)}
 
 /* ==================== skills ==================== */
 .skills{background:color-mix(in oklab, var(--bg-2) 84%, transparent);
@@ -630,7 +641,7 @@ html[data-lang="ar"] .contact-btns a{font-family:var(--f-ar);letter-spacing:0}
 .qr-frame canvas{display:block;width:172px;height:172px;image-rendering:pixelated;border-radius:8px}
 .qr-cap{font-family:var(--f-mono);font-size:.95rem;color:var(--muted);letter-spacing:.06em}
 html[data-lang="ar"] .qr-cap{font-family:var(--f-ar);letter-spacing:0}
-.qr-url{font-family:var(--f-mono);font-size:.82rem;color:var(--accent);text-decoration:none;word-break:break-all;max-width:172px;line-height:1.4}
+.qr-url{font-family:var(--f-mono);font-size:.82rem;color:var(--accent);text-decoration:none;overflow-wrap:anywhere;max-width:172px;line-height:1.4}
 .qr-url:hover{text-decoration:underline;text-underline-offset:2px}
 
 /* ==================== footer ==================== */
@@ -987,7 +998,6 @@ html[data-theme="dark"] .phone{ box-shadow:var(--shadow), inset 0 0 0 5px #05060
 @media (max-width:1240px){
   .hero{grid-template-columns:minmax(0,1fr) minmax(320px,440px)}
   .hero-rail{display:none}
-  .fc2,.fc3{display:none}
   .w-feat,.w-d{grid-column:span 7}
   .w-b,.w-c{grid-column:span 5}
 }
@@ -1076,7 +1086,7 @@ html[data-theme="dark"] .phone{ box-shadow:var(--shadow), inset 0 0 0 5px #05060
 <div class="railbar" id="railbar" aria-hidden="true"><span id="railFill"></span><b id="railNode"></b></div>
 
 <!-- ==================== NAV ==================== -->
-<nav class="nav" aria-label="Main">
+<nav class="nav" aria-label="Main" data-aria-ar="التنقل الرئيسي">
   <a class="nav-name" href="#main">
     <b><span class="en">Saad Zidouri</span><span class="ar" lang="ar">سعد زيدوري</span></b>
     <small dir="ltr">26.28°N 50.11°E</small>
@@ -1089,7 +1099,7 @@ html[data-theme="dark"] .phone{ box-shadow:var(--shadow), inset 0 0 0 5px #05060
     <a href="#contact"><span class="en">contact</span><span class="ar" lang="ar">التواصل</span></a>
   </div>
   <div class="nav-tools">
-    <div class="theme-switch" role="group" aria-label="Color scheme">
+    <div class="theme-switch" role="group" aria-label="Color scheme" data-aria-ar="نظام الألوان">
       <button type="button" id="th-light" data-set-theme="light" aria-pressed="false">
         <span class="en">Light</span><span class="ar" lang="ar">فاتح</span>
       </button>
@@ -1106,21 +1116,21 @@ html[data-theme="dark"] .phone{ box-shadow:var(--shadow), inset 0 0 0 5px #05060
 <main id="main">
 
 <!-- ==================== HERO ==================== -->
-<header class="hero" id="top" aria-label="Introduction">
+<header class="hero" id="top" aria-label="Introduction" data-aria-ar="المقدمة">
   <div class="hero-scan" aria-hidden="true"></div>
-  <aside class="hero-rail" aria-label="Profile annotations">
+  <aside class="hero-rail" aria-label="Profile annotations" data-aria-ar="ملاحظات الملف الشخصي">
     <p class="annot"><strong><span class="en">Location</span><span class="ar" lang="ar">الموقع</span></strong><br>
       <span class="en">Khobar / Dhahran<br>Saudi Arabia</span>
       <span class="ar" lang="ar">الخبر / الظهران<br>المملكة العربية السعودية</span></p>
     <p class="annot"><strong><span class="en">Status</span><span class="ar" lang="ar">الحالة</span></strong><br>
       <span class="tick">■</span> <span class="en">Open to SWE &amp; security roles</span>
-      <span class="ar" lang="ar">متاح لأدوار هندسة البرمجيات والأمن</span></p>
+      <span class="ar" lang="ar">متاح لأدوار هندسة البرمجيات والأمن السيبراني</span></p>
     <p class="annot"><strong><span class="en">Degree</span><span class="ar" lang="ar">الدرجة العلمية</span></strong><br>
       <span class="en">B.S. Computer Engineering<br>KFUPM · Dec 2026</span>
       <span class="ar" lang="ar">بكالوريوس هندسة الحاسب<br>جامعة الملك فهد · ديسمبر 2026</span></p>
     <div>
       <div class="measure" aria-hidden="true"></div>
-      <p class="annot" dir="ltr">FIG. 01 → flutter field unit</p>
+      <p class="annot"><span class="en" dir="ltr">FIG. 01 → Al Rugaib sales app</span><span class="ar" lang="ar">الشكل 01 ← تطبيق مبيعات الرقيب</span></p>
     </div>
   </aside>
 
@@ -1131,8 +1141,8 @@ html[data-theme="dark"] .phone{ box-shadow:var(--shadow), inset 0 0 0 5px #05060
       <span class="ar" lang="ar">طالب سنة أخيرة في هندسة الحاسب بجامعة الملك فهد للبترول والمعادن. أبني <span class="hl">تطبيقات جوّال تعمل في الإنتاج</span> وأختبر <span class="hl">أمنها</span>.</span>
     </p>
     <p class="hero-flag">
-      <span class="en">At Al Rugaib Furniture I rebuilt the internal sales tool from a single SKU-lookup screen into a multi-module Flutter superapp (orders, catalogs, quotations, analytics, bonus tracking) used daily by <b>300+ staff across 15 branches</b>. Catalog loads dropped from 10–15&nbsp;seconds to <b>under 3</b> on a 160,000-item catalog.</span>
-      <span class="ar" lang="ar">في شركة الرقيب للأثاث أعدتُ بناء أداة المبيعات الداخلية من شاشة بحث واحدة عن رقم الصنف إلى تطبيق Flutter شامل متعدد الوحدات (الطلبات والكتالوجات وعروض الأسعار والتحليلات ومتابعة الحوافز) يستخدمه يوميًا <b>أكثر من 300 موظف في 15 فرعًا</b>. وانخفض زمن تحميل الكتالوج من 10–15 ثانية إلى <b>أقل من 3 ثوانٍ</b> على 160,000 صنف.</span>
+      <span class="en">At Al Rugaib Furniture I tested the internal sales app as a showroom associate, then grew it as an intern and now maintain it part-time: a multi-module Flutter superapp (orders, catalog, quotations, analytics, bonus tracking) used daily by <b>300+ staff across 15 branches</b>.</span>
+      <span class="ar" lang="ar">في شركة الرقيب للأثاث اختبرتُ تطبيق المبيعات الداخلي بصفتي موظف مبيعات في المعرض، ثم طوّرتُه بصفتي متدربًا، وأصونه الآن بدوام جزئي: تطبيق Flutter شامل متعدد الوحدات (الطلبات والكتالوج وعروض الأسعار والتحليلات ومتابعة الحوافز) يستخدمه يوميًا <b>أكثر من 300 موظف في 15 فرعًا</b>.</span>
     </p>
     <p class="hero-facts" >
       <span class="en"><b>eJPTv2</b> certified (INE, Jan 2025) · KFUPM CTF <b>3rd place</b>, team lead<br>GPA 3.27, Second Honors · KFUPM: QS <b>#63</b> worldwide, 1st in the Arab region</span>
@@ -1151,11 +1161,9 @@ html[data-theme="dark"] .phone{ box-shadow:var(--shadow), inset 0 0 0 5px #05060
     <div class="orbit o2" aria-hidden="true"></div>
     <div class="phone-glow" aria-hidden="true"></div>
     <span class="float-chip fc1" dir="ltr" aria-hidden="true">26.2172° N · 50.1971° E</span>
-    <span class="float-chip fc2" dir="ltr" aria-hidden="true">flutter · <b>release</b></span>
-    <span class="float-chip fc3" dir="ltr" aria-hidden="true"><b>300+</b> daily users · 15 branches</span>
 
     <div class="phone-tilt" id="phoneTilt">
-      <figure class="phone" dir="ltr" aria-label="Recreation of the Al Rugaib sales app">
+      <figure class="phone" dir="ltr" aria-label="Recreation of the Al Rugaib sales app" data-aria-ar="محاكاة لتطبيق مبيعات الرقيب">
         <div class="phone-screens" id="phoneScreens">
           <!-- real app screenshots -->
           <div class="pscreen is-on">
@@ -1172,12 +1180,17 @@ html[data-theme="dark"] .phone{ box-shadow:var(--shadow), inset 0 0 0 5px #05060
     </div>
 
     <div class="phone-ctl" dir="ltr">
-      <button type="button" class="pdot is-on" data-go="0" aria-label="Screen 1: Google Reviews dashboard"></button>
-      <button type="button" class="pdot" data-go="1" aria-label="Screen 2: NPS dashboard"></button>
-      <button type="button" class="pdot" data-go="2" aria-label="Screen 3: SKU search"></button>
+      <button type="button" class="pdot is-on" data-go="0" aria-label="Screen 1: Google Reviews dashboard" data-aria-ar="الشاشة 1: لوحة تقييمات Google"></button>
+      <button type="button" class="pdot" data-go="1" aria-label="Screen 2: NPS dashboard" data-aria-ar="الشاشة 2: لوحة مؤشر NPS"></button>
+      <button type="button" class="pdot" data-go="2" aria-label="Screen 3: SKU search" data-aria-ar="الشاشة 3: البحث عن رقم الصنف"></button>
       <button type="button" class="phone-pause" id="phonePause" aria-pressed="false">
         <span class="en">❚❚ pause</span><span class="ar" lang="ar">❚❚ إيقاف</span>
       </button>
+    </div>
+    <!-- facts about the app, in flow under the phone so they never cover it or the copy -->
+    <div class="phone-chips" aria-hidden="true">
+      <span class="stage-chip"><span class="en" dir="ltr">flutter · <b>release</b></span><span class="ar" lang="ar">Flutter · <b>إصدار</b></span></span>
+      <span class="stage-chip"><span class="en" dir="ltr"><b>300+</b> daily users · 15 branches</span><span class="ar" lang="ar"><b>+300</b> مستخدم يوميًا · 15 فرعًا</span></span>
     </div>
   </div>
 </header>
@@ -1190,7 +1203,7 @@ html[data-theme="dark"] .phone{ box-shadow:var(--shadow), inset 0 0 0 5px #05060
   <span class="en"><b>160,000</b> SKUs</span><span class="ar" lang="ar"><b>160,000</b> صنف</span>
   <span class="en">catalog loads <b>&lt; 3 s</b></span><span class="ar" lang="ar">تحميل الكتالوج <b>أقل من 3 ثوانٍ</b></span>
   <span class="en">Tabby ⇄ D365 · <b>complete</b></span><span class="ar" lang="ar">تكامل Tabby مع D365 · <b>مكتمل</b></span>
-  <span class="en">eJPTv2 · <b>earned</b></span><span class="ar" lang="ar">شهادة eJPTv2 · <b>مُنجزة</b></span>
+  <span class="en">eJPTv2 · <b>earned</b></span><span class="ar" lang="ar">شهادة eJPTv2 · <b>حاصل عليها</b></span>
 </div>
 
 <!-- ==================== EXPERIENCE ==================== -->
@@ -1199,13 +1212,13 @@ html[data-theme="dark"] .phone{ box-shadow:var(--shadow), inset 0 0 0 5px #05060
     <h2 class="h2 reveal-h" id="xp-title"><span class="en">Experience</span><span class="ar" lang="ar">الخبرة العملية</span></h2>
   </div>
   <div class="section-grid">
-    <aside class="rail" aria-label="Experience annotations">
+    <aside class="rail" aria-label="Experience annotations" data-aria-ar="ملاحظات الخبرة">
       <p class="annot"><strong><span class="en">Range</span><span class="ar" lang="ar">المدى الزمني</span></strong><br>
-        <span class="en">Jan 2025 → present<br>6 roles · newest first</span>
-        <span class="ar" lang="ar">يناير 2025 ← الآن<br>ست أدوار · الأحدث أولًا</span></p>
+        <span class="en">Jan 2025 → present<br>7 roles · newest first</span>
+        <span class="ar" lang="ar">يناير 2025 ← الآن<br>سبعة أدوار · الأحدث أولًا</span></p>
       <p class="annot"><strong><span class="en">Thread</span><span class="ar" lang="ar">الخيط المشترك</span></strong><br>
-        <span class="en">One app, four roles:<br>tester → intern → developer</span>
-        <span class="ar" lang="ar">تطبيق واحد وأدوار متدرجة:<br>مختبِر ← متدرب ← مطوّر</span></p>
+        <span class="en">One app, three roles:<br>tester → intern → developer</span>
+        <span class="ar" lang="ar">تطبيق واحد وثلاثة أدوار:<br>مختبِر ← متدرب ← مطوّر</span></p>
     </aside>
 
     <div class="xp-list">
@@ -1213,17 +1226,17 @@ html[data-theme="dark"] .phone{ box-shadow:var(--shadow), inset 0 0 0 5px #05060
 
       <article class="xp now">
         <div class="xp-when">
-          <b><span class="en">Jul 2026 — Present</span><span class="ar" lang="ar">يوليو 2026 — حتى الآن</span></b>
+          <b><span class="en">Jul 2026 – Present</span><span class="ar" lang="ar">يوليو 2026 – حتى الآن</span></b>
           <span class="en">part-time · remote</span><span class="ar" lang="ar">دوام جزئي · عن بُعد</span>
         </div>
         <div>
           <h3><span class="en">Business Developer</span><span class="ar" lang="ar">مطوّر أعمال</span></h3>
-          <p class="xp-org" dir="auto"><span class="en">Intelligent Solutions | Voice AI</span><span class="ar" lang="ar">Intelligent Solutions | Voice AI</span></p>
+          <p class="xp-org"><span class="en">Intelligent Solutions | Voice AI</span><span class="ar" lang="en" dir="ltr">Intelligent Solutions | Voice AI</span></p>
           <ul>
-            <li><span class="en">Source and qualify client companies for the firm's voice-AI call-automation agent, then work each deal toward close.</span>
-                <span class="ar" lang="ar">أستقطب شركات عملاء لوكيل أتمتة المكالمات بالذكاء الاصطناعي الصوتي لدى الشركة وأؤهلها، ثم أتابع كل صفقة حتى إتمامها.</span></li>
-            <li><span class="en">Gather client requirements and map them to the model's capabilities: automated call response and call analysis.</span>
-                <span class="ar" lang="ar">أجمع متطلبات العملاء وأطابقها مع قدرات النموذج: الرد الآلي على المكالمات وتحليلها.</span></li>
+            <li><span class="en">Sourced and qualified client companies for the firm's <b>voice-AI call-automation agent</b> and carried each deal toward close.</span>
+                <span class="ar" lang="ar">استقطبتُ شركات العملاء وأهّلتُها لصالح <b>وكيل أتمتة المكالمات بالذكاء الاصطناعي الصوتي</b> لدى الشركة وتابعتُ كل صفقة حتى إتمامها.</span></li>
+            <li><span class="en">Gathered requirements from each client and mapped them to what the agent does: automated call response and call analysis.</span>
+                <span class="ar" lang="ar">جمعتُ المتطلبات من كل عميل وربطتُها بما يقدّمه الوكيل: الرد الآلي على المكالمات وتحليلها.</span></li>
           </ul>
         </div>
         <p class="xp-note"><span class="en">current</span><span class="ar" lang="ar">حاليًا</span></p>
@@ -1231,21 +1244,21 @@ html[data-theme="dark"] .phone{ box-shadow:var(--shadow), inset 0 0 0 5px #05060
 
       <article class="xp">
         <div class="xp-when">
-          <b><span class="en">May 2026 — Present</span><span class="ar" lang="ar">مايو 2026 — حتى الآن</span></b>
+          <b><span class="en">May 2026 – Present</span><span class="ar" lang="ar">مايو 2026 – حتى الآن</span></b>
           <span class="en">part-time · Khobar</span><span class="ar" lang="ar">دوام جزئي · الخبر</span>
         </div>
         <div>
           <h3><span class="en">System Developer</span><span class="ar" lang="ar">مطوّر أنظمة</span></h3>
           <p class="xp-org"><span class="en">H. M. Al Rugaib &amp; Sons Trading Co.</span><span class="ar" lang="ar">شركة حمد محمد الرقيب وأولاده التجارية</span></p>
           <ul>
-            <li><span class="en">Built the quotations feature that reflects directly into <b>Microsoft Dynamics 365 production</b>.</span>
-                <span class="ar" lang="ar">بنيتُ ميزة عروض الأسعار التي تنعكس مباشرة في بيئة الإنتاج في <b>Microsoft Dynamics 365</b>.</span></li>
-            <li><span class="en">Shipped a standalone price-tag package connected via API: showroom staff print tags on the spot, saving <b>hours per employee every month</b>.</span>
-                <span class="ar" lang="ar">أطلقتُ حزمة مستقلة لطباعة بطاقات الأسعار متصلة عبر API: يطبع موظفو المعرض البطاقات فورًا، بما يوفّر <b>ساعات لكل موظف شهريًا</b>.</span></li>
-            <li><span class="en">Owned the <b>Tabby payment-platform integration with D365 end-to-end</b>: sandbox → production, coordinating with Tabby's team. Complete.</span>
-                <span class="ar" lang="ar">تولّيتُ <b>تكامل منصة الدفع Tabby مع D365 من البداية إلى النهاية</b>: من البيئة التجريبية إلى الإنتاج بالتنسيق مع فريق Tabby. مكتمل.</span></li>
-            <li><span class="en">Ran end-to-end ERP payment testing with prioritized issue reports.</span>
-                <span class="ar" lang="ar">أجريتُ اختبارات مدفوعات ERP من الطرف إلى الطرف مع تقارير مشكلات مرتبة حسب الأولوية.</span></li>
+            <li><span class="en">Built a quotations module that writes directly into <b>Microsoft Dynamics 365 production</b> and produces VAT-correct bilingual PDFs with product photos.</span>
+                <span class="ar" lang="ar">بنيتُ وحدة عروض أسعار تكتب مباشرة في <b>بيئة الإنتاج في Microsoft Dynamics 365</b> وتُخرج ملفات PDF ثنائية اللغة بحساب صحيح لضريبة القيمة المضافة مع صور المنتجات.</span></li>
+            <li><span class="en">Took the <b>Tabby buy-now-pay-later gateway from sandbox to production</b> in Dynamics 365 by owning the integration end to end with Tabby's team.</span>
+                <span class="ar" lang="ar">نقلتُ <b>بوابة الدفع الآجل Tabby من بيئة Sandbox إلى الإنتاج</b> في Dynamics 365 عبر تولّي التكامل بالكامل بالتنسيق مع فريق Tabby.</span></li>
+            <li><span class="en">Kept showroom price tags printing at <b>true physical size</b> by recalibrating the 4-up template across the render templates, server, printers admin page and desktop print agent of the price-tag pipeline, continued from an existing base.</span>
+                <span class="ar" lang="ar">حافظتُ على طباعة بطاقات أسعار المعرض <b>بالمقاس الفعلي</b> عبر إعادة معايرة قالب البطاقات الأربع في قوالب العرض والخادم وصفحة إدارة الطابعات ووكيل الطباعة المكتبي ضمن خط أنابيب بطاقات الأسعار، استكمالًا لقاعدة قائمة.</span></li>
+            <li><span class="en">Caught payment defects before release by running full ERP payment flows and filing prioritized issue reports.</span>
+                <span class="ar" lang="ar">رصدتُ عيوب المدفوعات قبل الإصدار عبر إجراء اختبارات شاملة لمدفوعات ERP ورفع تقارير مشكلات مرتبة حسب الأولوية.</span></li>
           </ul>
         </div>
         <p class="xp-note"><span class="en">tabby ⇄ d365<br><em>live in production</em></span><span class="ar" lang="ar">تكامل Tabby مع D365<br><em>يعمل في الإنتاج</em></span></p>
@@ -1253,21 +1266,50 @@ html[data-theme="dark"] .phone{ box-shadow:var(--shadow), inset 0 0 0 5px #05060
 
       <article class="xp">
         <div class="xp-when">
-          <b><span class="en">Jan — May 2026</span><span class="ar" lang="ar">يناير — مايو 2026</span></b>
+          <b><span class="en">Mar 2026 – Present</span><span class="ar" lang="ar">مارس 2026 – حتى الآن</span></b>
+          <span class="en">freelance · remote</span><span class="ar" lang="ar">عمل حر · عن بُعد</span>
+        </div>
+        <div>
+          <h3><span class="en">Freelance Software Engineer</span><span class="ar" lang="ar">مهندس برمجيات مستقل</span></h3>
+          <p class="xp-org"><span class="en">Independent client work: taking inherited apps through to store submission</span><span class="ar" lang="ar">عمل مستقل للعملاء: إيصال التطبيقات الموروثة حتى تقديمها إلى المتاجر</span></p>
+          <p class="xp-org"><span class="en">Journey Joy (rebranded Rifqah for the 2.x release), campus ride-hailing platform: Node/Express + MySQL backend, React admin panel, Flutter driver and passenger apps · <span class="nowrap">Jul 2026 – Present</span></span><span class="ar" lang="ar">Journey Joy (أُعيدت تسميتها Rifqah لإصدار <span dir="ltr">2.x</span>)، منصة نقل ركاب حسب الطلب جامعية: خادم Node/Express + MySQL، ولوحة تحكم React، وتطبيقا السائق والراكب بـFlutter · <span class="nowrap">يوليو 2026 – حتى الآن</span></span></p>
+          <ul>
+            <li><span class="en">Took the platform from an inherited English-only, partly integrated codebase (v1.x apps already on the App Store and Google Play) to a <b>2.x release candidate</b> now with the owner's team for store submission, with the backend and admin panel changes below already in production.</span>
+                <span class="ar" lang="ar">نقلتُ المنصة من قاعدة شيفرة موروثة بالإنجليزية فقط وغير مكتملة الربط (تطبيقات الإصدار <span dir="ltr">1.x</span> متاحة أصلًا على App Store وGoogle Play) إلى <b>إصدار <span dir="ltr">2.x</span> مرشّح للإطلاق</b> هو الآن لدى فريق المالك لتقديمه إلى المتاجر، علمًا بأن تغييرات الخادم ولوحة الإدارة المذكورة أدناه تعمل في الإنتاج بالفعل.</span></li>
+            <li><span class="en">Removed four vulnerabilities from the platform: a <b>MASTER_OTP login backdoor</b> that let one universal code sign in to any account, two broken-object-level-authorization (IDOR) flaws and an unauthenticated path traversal.</span>
+                <span class="ar" lang="ar">أزلتُ أربع ثغرات من المنصة: <b>باب خلفي لتسجيل الدخول بـMASTER_OTP</b> كان يتيح لرمز واحد شامل تسجيل الدخول إلى أي حساب، وثغرتَي تفويض مكسور على مستوى الكائنات (IDOR)، واجتياز مسارات دون مصادقة.</span></li>
+            <li><span class="en">Hardened the inherited <b>Paymob card integration</b> and made it reconcile: charging the booking actually being paid for, a saved-card toggle, subscription cancellation and renewal, and refund reconciliation through the gateway's transaction inquiry, with the server side prepared for Apple Pay behind config.</span>
+                <span class="ar" lang="ar">حصّنتُ <b>تكامل الدفع بالبطاقة عبر Paymob</b> الموروث وجعلتُه قابلًا للمطابقة: تحصيل قيمة الحجز الذي يُدفع فعلًا، ومفتاح لحفظ البطاقة، وإلغاء الاشتراك وتجديده، ومطابقة المبالغ المستردة عبر استعلام المعاملات لدى البوابة، مع تجهيز جانب الخادم لـApple Pay خلف إعدادات التهيئة.</span></li>
+            <li><span class="en">Made the platform usable by Arabic-speaking passengers and drivers by localizing all three surfaces (driver, passenger, admin) with <b>RTL layout</b>, Arabic typography and Arabic district names generated from the platform's live district list.</span>
+                <span class="ar" lang="ar">جعلتُ المنصة قابلة للاستخدام من الركاب والسائقين الناطقين بالعربية عبر تعريب الواجهات الثلاث (السائق والراكب والإدارة) <b>بتخطيط من اليمين إلى اليسار</b> وخطوط عربية وأسماء أحياء عربية مولَّدة من قائمة الأحياء الحية في المنصة.</span></li>
+            <li><span class="en">Purged <b>43 customers' personal data</b> from git history with a verified rewrite, then added per-IP and per-account rate limiting, HMAC verification on Paymob callbacks, presigned S3 reads and a pre-commit secret scanner.</span>
+                <span class="ar" lang="ar">طهّرتُ <b>البيانات الشخصية لـ43 عميلًا</b> من سجل git بإعادة كتابة متحقَّق منها، ثم أضفتُ تحديدًا لمعدل الطلبات لكل عنوان IP ولكل حساب، والتحقق من HMAC في استدعاءات الرجوع من Paymob، وقراءات S3 موقَّعة مسبقًا، وماسحًا للأسرار قبل الإيداع.</span></li>
+            <li><span class="en">Made production deploys repeatable on the existing <b>AWS EC2, RDS and S3</b> stack with a deploy script, drift check and schema preflight, and wrote the credential-rotation runbook after diagnosing two rotations that never reached the server.</span>
+                <span class="ar" lang="ar">جعلتُ النشر إلى الإنتاج قابلًا للتكرار على بنية <b>AWS القائمة (EC2 وRDS وS3)</b> بسكربت نشر وفحص للانحراف وتحقق مسبق من المخطط، وكتبتُ دليل تدوير بيانات الاعتماد بعد تشخيص عمليتَي تدوير لم تصلا إلى الخادم قط.</span></li>
+            <li><span class="en">Took the backend from no test runner to <b>2,363 passing mocha tests</b> and added a weekly dependency-audit workflow that fails on High or Critical advisories.</span>
+                <span class="ar" lang="ar">نقلتُ الخادم من غياب أي مشغّل اختبارات إلى <b>2,363 اختبار mocha ناجحًا</b>، وأضفتُ سير عمل أسبوعيًا لتدقيق الاعتماديات يفشل عند وجود تنبيهات عالية أو حرجة.</span></li>
+          </ul>
+        </div>
+        <p class="xp-note"><span class="en">inherited app →<br><em>2.x release candidate</em></span><span class="ar" lang="ar">تطبيق موروث ←<br><em>إصدار <span dir="ltr">2.x</span> مرشّح للإطلاق</em></span></p>
+      </article>
+
+      <article class="xp">
+        <div class="xp-when">
+          <b><span class="en">Jan – May 2026</span><span class="ar" lang="ar">يناير – مايو 2026</span></b>
           <span class="en">internship · Khobar</span><span class="ar" lang="ar">تدريب تعاوني · الخبر</span>
         </div>
         <div>
           <h3><span class="en">System Developer Intern</span><span class="ar" lang="ar">متدرّب تطوير أنظمة</span></h3>
           <p class="xp-org"><span class="en">H. M. Al Rugaib &amp; Sons Trading Co.</span><span class="ar" lang="ar">شركة حمد محمد الرقيب وأولاده التجارية</span></p>
           <ul>
-            <li><span class="en">Grew the app from a showroom tool into a <b>company-wide superapp: 300+ users, 15 branches</b>.</span>
-                <span class="ar" lang="ar">وسّعتُ التطبيق من أداة معرض إلى <b>تطبيق شامل على مستوى الشركة: أكثر من 300 مستخدم في 15 فرعًا</b>.</span></li>
-            <li><span class="en">Owned Dynamics 365 sandbox / UAT feature testing.</span>
-                <span class="ar" lang="ar">تولّيتُ اختبار الميزات في بيئتَي Sandbox وUAT في Dynamics 365.</span></li>
-            <li><span class="en">Validated all payment methods and third-party integrations, reconciling app ↔ ERP records.</span>
-                <span class="ar" lang="ar">تحققتُ من جميع طرق الدفع والتكاملات الخارجية بمطابقة سجلات التطبيق مع نظام ERP.</span></li>
-            <li><span class="en">Helped design <b>RBAC mapped to the company hierarchy</b>; resolved data-integrity issues.</span>
-                <span class="ar" lang="ar">شاركتُ في تصميم <b>صلاحيات وصول (RBAC) تطابق الهيكل الإداري للشركة</b>، وعالجتُ مشكلات سلامة البيانات.</span></li>
+            <li><span class="en">Cut catalog load time from <b>10–15 s to under 3 s</b> on a 160,000-item catalog by tuning queries, adding caching and moving heavy work to scheduled jobs.</span>
+                <span class="ar" lang="ar">خفّضتُ زمن تحميل الكتالوج من <b><span dir="ltr">10–15</span> ثانية إلى أقل من 3 ثوانٍ</b> على كتالوج من 160,000 صنف عبر ضبط الاستعلامات وإضافة التخزين المؤقت ونقل الأعمال الثقيلة إلى مهام مجدولة.</span></li>
+            <li><span class="en">After testing showed regular staff could open manager-only screens, closed them by designing <b>role-based access control mapped to the company hierarchy</b>.</span>
+                <span class="ar" lang="ar">بعد أن أظهر الاختبار أن الموظفين العاديين يستطيعون فتح الشاشات المخصصة للمديرين، أغلقتُها عبر تصميم <b>تحكم بالوصول قائم على الأدوار (RBAC) يطابق الهيكل الإداري للشركة</b>.</span></li>
+            <li><span class="en">Grew the internal app from a single SKU-lookup screen into a superapp used daily by <b>300+ staff across 15 branches</b> by shipping the orders and analytics screens, the bonus-reconciliation cron and the BOM/kit endpoint.</span>
+                <span class="ar" lang="ar">وسّعتُ التطبيق الداخلي من شاشة بحث واحدة عن رقم الصنف إلى تطبيق شامل يستخدمه يوميًا <b>أكثر من 300 موظف في 15 فرعًا</b> عبر إطلاق شاشتَي الطلبات والتحليلات، ومهمة cron لمطابقة الحوافز، ونقطة نهاية BOM/kit.</span></li>
+            <li><span class="en">Kept app and ERP records in agreement by owning Dynamics 365 sandbox/UAT testing and reconciling every payment method before each release.</span>
+                <span class="ar" lang="ar">حافظتُ على تطابق سجلات التطبيق مع نظام ERP عبر تولّي الاختبار في بيئتَي Sandbox وUAT في Dynamics 365 ومطابقة كل طريقة دفع قبل كل إصدار.</span></li>
           </ul>
         </div>
         <p class="xp-note"><span class="en">showroom tool →<br><em>company-wide</em></span><span class="ar" lang="ar">من أداة معرض ←<br><em>تطبيق للشركة كلها</em></span></p>
@@ -1275,35 +1317,33 @@ html[data-theme="dark"] .phone{ box-shadow:var(--shadow), inset 0 0 0 5px #05060
 
       <article class="xp">
         <div class="xp-when">
-          <b><span class="en">Oct 2025 — Jan 2026</span><span class="ar" lang="ar">أكتوبر 2025 — يناير 2026</span></b>
+          <b><span class="en"><span class="nowrap">Oct 2025 – Jan 2026</span></span><span class="ar" lang="ar"><span class="nowrap">أكتوبر 2025 – يناير 2026</span></span></b>
           <span class="en">part-time · showroom</span><span class="ar" lang="ar">دوام جزئي · المعرض</span>
         </div>
         <div>
           <h3><span class="en">Sales Associate</span><span class="ar" lang="ar">موظف مبيعات</span></h3>
           <p class="xp-org"><span class="en">H. M. Al Rugaib &amp; Sons Trading Co.</span><span class="ar" lang="ar">شركة حمد محمد الرقيب وأولاده التجارية</span></p>
           <ul>
-            <li><span class="en">Ran the full showroom sales cycle on Dynamics 365.</span>
-                <span class="ar" lang="ar">أدرتُ دورة مبيعات المعرض كاملة على Dynamics 365.</span></li>
-            <li><span class="en">Selected by the manager to test the new sales app, the same app I later rebuilt.</span>
-                <span class="ar" lang="ar">اختارني المدير لاختبار تطبيق المبيعات الجديد، وهو التطبيق نفسه الذي أعدتُ بناءه لاحقًا.</span></li>
+            <li><span class="en">Ran the full showroom sales cycle on <b>Dynamics 365</b>.</span>
+                <span class="ar" lang="ar">أدرتُ مبيعات المعرض بالكامل عبر تنفيذ دورة المبيعات كاملةً على <b>Dynamics 365</b>.</span></li>
+            <li><span class="en">Selected by the manager to test the new sales app in the showroom, <b>the same app I later grew into the superapp</b>.</span>
+                <span class="ar" lang="ar">اختارني المدير لاختبار تطبيق المبيعات الجديد في المعرض، <b>وهو التطبيق نفسه الذي طوّرتُه لاحقًا إلى التطبيق الشامل</b>.</span></li>
           </ul>
         </div>
-        <p class="xp-note"><span class="en">where the app<br><em>story begins</em></span><span class="ar" lang="ar">هنا بدأت<br><em>قصة التطبيق</em></span></p>
+        <p class="xp-note"><span class="en">first contact<br><em>with the app</em></span><span class="ar" lang="ar">أول تعامل<br><em>مع التطبيق</em></span></p>
       </article>
 
       <article class="xp">
         <div class="xp-when">
-          <b><span class="en">Sep 2025 — Present</span><span class="ar" lang="ar">سبتمبر 2025 — حتى الآن</span></b>
+          <b><span class="en">Sep 2025 – Present</span><span class="ar" lang="ar">سبتمبر 2025 – حتى الآن</span></b>
           <span class="en">volunteer · KFUPM</span><span class="ar" lang="ar">تطوعي · الجامعة</span>
         </div>
         <div>
           <h3><span class="en">Logistics &amp; Operations Team Lead</span><span class="ar" lang="ar">قائد فريق اللوجستيات والعمليات</span></h3>
           <p class="xp-org"><span class="en">KFUPM Cybersecurity Club</span><span class="ar" lang="ar">نادي الأمن السيبراني بجامعة الملك فهد</span></p>
           <ul>
-            <li><span class="en">Lead logistics and operations for workshops, competitions, and events.</span>
-                <span class="ar" lang="ar">أقود اللوجستيات والعمليات لورش العمل والمسابقات والفعاليات.</span></li>
-            <li><span class="en">Automate routine club tasks with Python.</span>
-                <span class="ar" lang="ar">أؤتمت المهام الروتينية للنادي باستخدام Python.</span></li>
+            <li><span class="en">Kept the club's workshops, competitions and events on schedule by running their logistics and <b>automating routine tasks with Python</b>.</span>
+                <span class="ar" lang="ar">حافظتُ على سير ورش النادي ومسابقاته وفعالياته في مواعيدها عبر إدارة لوجستياتها <b>وأتمتة المهام الروتينية باستخدام Python</b>.</span></li>
           </ul>
         </div>
         <p class="xp-note"><span class="en">ops + python</span><span class="ar" lang="ar">عمليات + Python</span></p>
@@ -1311,17 +1351,15 @@ html[data-theme="dark"] .phone{ box-shadow:var(--shadow), inset 0 0 0 5px #05060
 
       <article class="xp">
         <div class="xp-when">
-          <b><span class="en">Jan — Aug 2025</span><span class="ar" lang="ar">يناير — أغسطس 2025</span></b>
-          <span class="en">on-campus · KFUPM</span><span class="ar" lang="ar">داخل الجامعة</span>
+          <b><span class="en">Jan – Aug 2025</span><span class="ar" lang="ar">يناير – أغسطس 2025</span></b>
+          <span class="en">on-campus · KFUPM</span><span class="ar" lang="ar">في الحرم الجامعي · الجامعة</span>
         </div>
         <div>
           <h3><span class="en">Lab Assistant</span><span class="ar" lang="ar">مساعد مختبر</span></h3>
-          <p class="xp-org"><span class="en">KFUPM College of Computing &amp; Mathematics</span><span class="ar" lang="ar">كلية الحوسبة والرياضيات — جامعة الملك فهد</span></p>
+          <p class="xp-org"><span class="en">KFUPM College of Computing &amp; Mathematics</span><span class="ar" lang="ar">كلية الحوسبة والرياضيات · جامعة الملك فهد</span></p>
           <ul>
-            <li><span class="en">Built a Python/Tkinter scheduling app with conflict detection; <b>manual errors down 40%</b>.</span>
-                <span class="ar" lang="ar">بنيتُ تطبيق جدولة بلغة Python/Tkinter مع كشف التعارضات؛ <b>فانخفضت الأخطاء اليدوية 40%</b>.</span></li>
-            <li><span class="en">Rebuilt feedback delivery with Power Automate + Excel: a <b>2-hour task now takes 15 minutes</b>.</span>
-                <span class="ar" lang="ar">أعدتُ بناء تسليم التقييمات عبر Power Automate وExcel: مهمة <b>الساعتين أصبحت 15 دقيقة</b>.</span></li>
+            <li><span class="en">Cut manual scheduling errors by <b>40%</b> with a Python/Tkinter room scheduler that detects conflicts; cut a <b>2-hour feedback-delivery task to 15 minutes</b> with a Power Automate and Excel workflow.</span>
+                <span class="ar" lang="ar">خفّضتُ أخطاء الجدولة اليدوية بنسبة <b>40%</b> باستخدام مجدول قاعات Python/Tkinter يكشف التعارضات؛ واختصرتُ <b>مهمة تسليم التقييمات من ساعتين إلى 15 دقيقة</b> بسير عمل Power Automate وExcel.</span></li>
           </ul>
         </div>
         <p class="xp-note"><span class="en">Δt: 2 h → 15 min</span><span class="ar" lang="ar">من ساعتين ← 15 دقيقة</span></p>
@@ -1344,20 +1382,23 @@ html[data-theme="dark"] .phone{ box-shadow:var(--shadow), inset 0 0 0 5px #05060
       <header class="tbar">
         <span class="tbar-glyph" aria-hidden="true">⎇</span>
         <h3>journey-joy</h3>
-        <span class="tbar-controls" aria-hidden="true"><i>–</i><i>▢</i><i>×</i></span>
+        <span class="tbar-controls" aria-hidden="true"><i>−</i><i>▢</i><i>×</i></span>
       </header>
       <div class="win-body">
         <span class="badge badge-lock"><span class="en">Private · client work</span><span class="ar" lang="ar">خاص · عمل لعميل</span></span>
-        <p><span class="en">Ride-hailing platform: one backend serving an admin panel plus separate driver and passenger apps. I inherited the codebase from a previous contractor and took it to launch. <b>372 of its 381 commits are mine.</b></span>
-           <span class="ar" lang="ar">منصة نقل تشاركي: خادم واحد يخدم لوحة تحكم إدارية وتطبيقَي السائق والراكب. تسلّمتُ الشيفرة من مقاول سابق وأوصلتُها إلى الإطلاق. <b>372 من أصل 381 إيداعًا لي.</b></span></p>
+        <p><span class="en">Ride-hailing platform whose v1.x driver and passenger apps are <b>on the App Store and Google Play</b>, plus an admin panel. I inherited it English-only and partly integrated and am carrying it to a 2.x release; the backend and admin changes are already in production.</span>
+           <span class="ar" lang="ar">منصة نقل ركاب حسب الطلب تطبيقا السائق والراكب فيها من الإصدار <span dir="ltr">1.x</span> <b>متاحان على App Store وGoogle Play</b>، إضافة إلى لوحة تحكم إدارية. تسلّمتُها بالإنجليزية فقط وغير مكتملة الربط، وأعمل على إيصالها إلى إصدار <span dir="ltr">2.x</span>؛ وتغييرات الخادم ولوحة الإدارة تعمل في الإنتاج بالفعل.</span></p>
         <ul class="specs">
-          <li><span class="en">removed a MASTER_OTP backdoor that unlocked any account</span><span class="ar" lang="ar">أزلتُ ثغرة MASTER_OTP التي كانت تفتح أي حساب</span></li>
-          <li><span class="en">two IDOR fixes · path traversal closed · Paymob HMAC verified</span><span class="ar" lang="ar">إصلاح ثغرتَي IDOR · إغلاق اجتياز المسارات · التحقق من توقيع Paymob</span></li>
-          <li><span class="en">43 customers' data purged from git history, rewrite verified</span><span class="ar" lang="ar">تطهير بيانات 43 عميلًا من سجل المستودع، مع التحقق من إعادة الكتابة</span></li>
+          <li><span class="en">in the 2.x release candidate:</span><span class="ar" lang="ar">في الإصدار <span dir="ltr">2.x</span> المرشّح للإطلاق:</span></li>
+          <li><span class="en">Arabic and RTL across driver, passenger and admin · Paymob card, saved-card and Apple Pay payments</span><span class="ar" lang="ar">العربية والاتجاه من اليمين إلى اليسار في تطبيقَي السائق والراكب ولوحة الإدارة · مدفوعات Paymob بالبطاقة والبطاقة المحفوظة وApple Pay</span></li>
+          <li><span class="en">zone polygons on Google Maps · SOS button · 1:1 chat · repeatable AWS deploys</span><span class="ar" lang="ar">مضلعات المناطق على خرائط Google · زر SOS · محادثة فردية · نشر قابل للتكرار على AWS</span></li>
+          <li><span class="en">MASTER_OTP backdoor removed (it let one universal code sign in to any account) · two IDOR fixes · path traversal closed · Paymob HMAC verified</span><span class="ar" lang="ar">إزالة باب MASTER_OTP الخلفي (كان يتيح لرمز واحد شامل تسجيل الدخول إلى أي حساب) · إصلاح ثغرتَي IDOR · إغلاق اجتياز المسارات · التحقق من توقيع HMAC لدى Paymob</span></li>
+          <li><span class="en">43 customers' data purged from git history, rewrite verified</span><span class="ar" lang="ar">تطهير بيانات 43 عميلًا من سجل git، مع التحقق من إعادة الكتابة</span></li>
+          <li><span class="en">stores: <a href="https://apps.apple.com/sa/app/journey-joy/id6747132253" rel="noopener" dir="ltr">Journey Joy</a> · <a href="https://apps.apple.com/sa/app/journey-joy-partner/id6747132364" rel="noopener" dir="ltr">Journey Joy Partner</a> · <a href="https://play.google.com/store/apps/details?id=app.journeyjoy.student" rel="noopener" dir="ltr">Google Play</a></span><span class="ar" lang="ar">المتاجر: <a href="https://apps.apple.com/sa/app/journey-joy/id6747132253" rel="noopener" dir="ltr">Journey Joy</a> · <a href="https://apps.apple.com/sa/app/journey-joy-partner/id6747132364" rel="noopener" dir="ltr">Journey Joy Partner</a> · <a href="https://play.google.com/store/apps/details?id=app.journeyjoy.student" rel="noopener" dir="ltr">Google Play</a></span></li>
         </ul>
         <footer class="win-foot">
           <span class="lang-dot"><i style="--dot:#00B4AB"></i>Flutter · Node · React</span>
-          <span>role: primary contributor</span>
+          <span><span class="en">role: primary contributor since Jul 2026</span><span class="ar" lang="ar" dir="rtl">الدور: المساهم الرئيسي منذ يوليو 2026</span></span>
         </footer>
       </div>
     </article>
@@ -1366,20 +1407,20 @@ html[data-theme="dark"] .phone{ box-shadow:var(--shadow), inset 0 0 0 5px #05060
       <header class="tbar">
         <span class="tbar-glyph" aria-hidden="true">⎇</span>
         <h3>alrugaib-sales-platform</h3>
-        <span class="tbar-controls" aria-hidden="true"><i>–</i><i>▢</i><i>×</i></span>
+        <span class="tbar-controls" aria-hidden="true"><i>−</i><i>▢</i><i>×</i></span>
       </header>
       <div class="win-body">
         <span class="badge badge-lock"><span class="en">Private · proprietary</span><span class="ar" lang="ar">خاص · ملكية الشركة</span></span>
-        <p><span class="en">Internal sales superapp for Al Rugaib Furniture, rebuilt from a single SKU-lookup screen into a multi-module platform in daily use by <b>300+ staff across 15 branches</b>. Source stays with the company; the results don't have to.</span>
-           <span class="ar" lang="ar">التطبيق الداخلي للمبيعات في شركة الرقيب للأثاث، أعيد بناؤه من شاشة بحث واحدة عن رقم الصنف إلى منصة متعددة الوحدات يستخدمها يوميًا <b>أكثر من 300 موظف في 15 فرعًا</b>. الشيفرة ملك للشركة؛ أما النتائج فقابلة للعرض.</span></p>
+        <p><span class="en">Internal sales superapp for Al Rugaib Furniture: <b>orders, catalog, quotations, analytics, bonus tracking</b>.</span>
+           <span class="ar" lang="ar">التطبيق الشامل للمبيعات الداخلية في شركة الرقيب للأثاث: <b>الطلبات والكتالوج وعروض الأسعار والتحليلات ومتابعة الحوافز</b>.</span></p>
         <ul class="specs">
-          <li><span class="en">catalog: 160,000 items · loads 10–15 s → under 3 s</span><span class="ar" lang="ar">الكتالوج: 160,000 صنف · التحميل من 10–15 ثانية إلى أقل من 3 ثوانٍ</span></li>
-          <li><span class="en">quotations write straight into Dynamics 365 production · bilingual PDFs</span><span class="ar" lang="ar">عروض الأسعار تُكتب مباشرة في بيئة Dynamics 365 الإنتاجية · بملفات PDF ثنائية اللغة</span></li>
-          <li><span class="en">RBAC mapped to the real company hierarchy</span><span class="ar" lang="ar">صلاحيات RBAC تطابق الهيكل الإداري الفعلي</span></li>
+          <li><span class="en">catalog: 160,000 items · loads 10–15 s → under 3 s</span><span class="ar" lang="ar">الكتالوج: 160,000 صنف · التحميل من <span dir="ltr">10–15</span> ثانية إلى أقل من 3 ثوانٍ</span></li>
+          <li><span class="en">quotations write straight into Dynamics 365 production · bilingual PDFs</span><span class="ar" lang="ar">عروض الأسعار تُكتب مباشرة في بيئة Dynamics 365 الإنتاجية · ملفات PDF ثنائية اللغة</span></li>
+          <li><span class="en">RBAC mapped to the company hierarchy</span><span class="ar" lang="ar">صلاحيات RBAC تطابق الهيكل الإداري للشركة</span></li>
         </ul>
         <footer class="win-foot">
           <span class="lang-dot"><i style="--dot:#00B4AB"></i>Dart · Flutter</span>
-          <span>role: developer &amp; owner</span>
+          <span><span class="en">role: developer (intern, then part-time)</span><span class="ar" lang="ar" dir="rtl">الدور: مطوّر (متدرب ثم دوام جزئي)</span></span>
         </footer>
       </div>
     </article>
@@ -1388,12 +1429,12 @@ html[data-theme="dark"] .phone{ box-shadow:var(--shadow), inset 0 0 0 5px #05060
       <header class="tbar">
         <span class="tbar-glyph" aria-hidden="true">⎇</span>
         <h3>peregrine</h3>
-        <span class="tbar-controls" aria-hidden="true"><i>–</i><i>▢</i><i>×</i></span>
+        <span class="tbar-controls" aria-hidden="true"><i>−</i><i>▢</i><i>×</i></span>
       </header>
       <div class="win-body">
         <span class="badge badge-lock"><span class="en">Private · solo</span><span class="ar" lang="ar">خاص · عمل فردي</span></span>
-        <p><span class="en">An AI job-hunting SaaS I built alone: parse a CV into a profile, score roles against it with vector search, tailor a resume to each one, then run recruiter outreach behind a compliance gate that cannot be bypassed.</span>
-           <span class="ar" lang="ar">منصة برمجية للبحث عن وظائف بالذكاء الاصطناعي بنيتُها وحدي: تحليل السيرة الذاتية إلى ملف مهني، وترتيب الوظائف بالبحث المتجهي، وتفصيل سيرة لكل وظيفة، ثم مراسلة جهات التوظيف خلف بوابة امتثال لا يمكن تجاوزها.</span></p>
+        <p><span class="en">An AI job-search SaaS I built alone: parse a CV into a profile, score roles against it with vector search, tailor a resume to each one, then run recruiter outreach behind a CAN-SPAM, CASL and GDPR compliance gate re-checked at send time.</span>
+           <span class="ar" lang="ar">منصة SaaS للبحث عن وظائف بالذكاء الاصطناعي بنيتُها وحدي: تحليل السيرة الذاتية إلى ملف مهني، وتقييم مدى مطابقة الوظائف له بالبحث المتجهي، وتفصيل سيرة لكل وظيفة، ثم مراسلة جهات التوظيف خلف بوابة امتثال لأنظمة CAN-SPAM وCASL وGDPR يُعاد التحقق منها لحظة الإرسال.</span></p>
         <ul class="specs">
           <li><span class="en">21 tables · row-level security on all 21 · 57 policies · 39 routes</span><span class="ar" lang="ar">21 جدولًا · أمان على مستوى الصف في جميعها · 57 سياسة · 39 مسارًا</span></li>
           <li><span class="en">CAN-SPAM / CASL / GDPR gate, re-checked at send time</span><span class="ar" lang="ar">بوابة امتثال لأنظمة CAN-SPAM وCASL وGDPR، يُعاد التحقق منها لحظة الإرسال</span></li>
@@ -1401,7 +1442,7 @@ html[data-theme="dark"] .phone{ box-shadow:var(--shadow), inset 0 0 0 5px #05060
         </ul>
         <footer class="win-foot">
           <span class="lang-dot"><i style="--dot:#3178c6"></i>TypeScript</span>
-          <span>role: sole author</span>
+          <span><span class="en">role: sole author</span><span class="ar" lang="ar" dir="rtl">الدور: المؤلف الوحيد</span></span>
         </footer>
       </div>
     </article>
@@ -1410,19 +1451,19 @@ html[data-theme="dark"] .phone{ box-shadow:var(--shadow), inset 0 0 0 5px #05060
       <header class="tbar">
         <span class="tbar-glyph" aria-hidden="true">⎇</span>
         <h3>price-tag-printer</h3>
-        <span class="tbar-controls" aria-hidden="true"><i>–</i><i>▢</i><i>×</i></span>
+        <span class="tbar-controls" aria-hidden="true"><i>−</i><i>▢</i><i>×</i></span>
       </header>
       <div class="win-body">
         <span class="badge badge-lock"><span class="en">Private · proprietary</span><span class="ar" lang="ar">خاص · ملكية الشركة</span></span>
         <p><span class="en">The showrooms print price tags from this every morning. A daily job diffs Dynamics prices, renders bilingual A4 tag sheets, and a desktop agent prints them in store.</span>
            <span class="ar" lang="ar">تطبع المعارض بطاقات الأسعار من هذا النظام كل صباح. مهمة يومية تقارن أسعار Dynamics، وتُخرج صفحات بطاقات ثنائية اللغة بمقاس A4، ويطبعها وكيل مكتبي داخل الفرع.</span></p>
         <ul class="specs">
-          <li><span class="en">9-up and 4-up bilingual tags on one A4 sheet</span><span class="ar" lang="ar">9 أو 4 بطاقات ثنائية اللغة في صفحة A4 واحدة</span></li>
+          <li><span class="en">9-up and 4-up bilingual tags on one A4 sheet</span><span class="ar" lang="ar">تخطيطان: 9 بطاقات و4 بطاقات ثنائية اللغة في صفحة A4 واحدة</span></li>
           <li><span class="en">recalibrated the 4-up template to true physical size</span><span class="ar" lang="ar">أعدتُ معايرة قالب البطاقات الأربع ليطبع بالمقاس الفعلي</span></li>
         </ul>
         <footer class="win-foot">
           <span class="lang-dot"><i style="--dot:#3178c6"></i>TypeScript</span>
-          <span>role: continued an existing base</span>
+          <span><span class="en">role: continued existing base</span><span class="ar" lang="ar" dir="rtl">الدور: أكملتُ قاعدة قائمة</span></span>
         </footer>
       </div>
     </article>
@@ -1431,19 +1472,19 @@ html[data-theme="dark"] .phone{ box-shadow:var(--shadow), inset 0 0 0 5px #05060
       <header class="tbar">
         <span class="tbar-glyph" aria-hidden="true">⎇</span>
         <h3>alrugaib-delivery-ledger</h3>
-        <span class="tbar-controls" aria-hidden="true"><i>–</i><i>▢</i><i>×</i></span>
+        <span class="tbar-controls" aria-hidden="true"><i>−</i><i>▢</i><i>×</i></span>
       </header>
       <div class="win-body">
         <span class="badge badge-lock"><span class="en">Private · solo</span><span class="ar" lang="ar">خاص · عمل فردي</span></span>
-        <p><span class="en">A delivery board for management where no date is hardcoded. The schedule computes itself on a Sunday-to-Thursday Riyadh week, so finishing one task early pulls the whole plan in.</span>
-           <span class="ar" lang="ar">لوحة تسليم للإدارة لا يُثبَّت فيها أي تاريخ. يحسب الجدول نفسه على أسبوع عمل من الأحد إلى الخميس بتوقيت الرياض، فإنهاء مهمة مبكرًا يقدّم الخطة كاملة.</span></p>
+        <p><span class="en">A delivery board for management. The schedule computes itself on a Sunday-to-Thursday Riyadh week, with no hardcoded dates, so finishing one task early pulls the whole plan in.</span>
+           <span class="ar" lang="ar">لوحة تسليم للإدارة. يحسب الجدول نفسه على أسبوع عمل من الأحد إلى الخميس بتوقيت الرياض، دون أي تواريخ مثبّتة، فإنهاء مهمة مبكرًا يقدّم الخطة كاملة.</span></p>
         <ul class="specs">
           <li><span class="en">timing-safe passcode compare with a length-leak guard</span><span class="ar" lang="ar">مقارنة رمز دخول ثابتة الزمن مع حماية من تسريب الطول</span></li>
           <li><span class="en">allow-list rebuild, hard payload caps, holds no real credentials</span><span class="ar" lang="ar">إعادة بناء بقائمة سماح، وحدود صارمة للحمولة، ولا يحتفظ بأي بيانات اعتماد حقيقية</span></li>
         </ul>
         <footer class="win-foot">
           <span class="lang-dot"><i style="--dot:#f1e05a"></i>JavaScript</span>
-          <span>role: sole author</span>
+          <span><span class="en">role: sole author</span><span class="ar" lang="ar" dir="rtl">الدور: المؤلف الوحيد</span></span>
         </footer>
       </div>
     </article>
@@ -1452,7 +1493,7 @@ html[data-theme="dark"] .phone{ box-shadow:var(--shadow), inset 0 0 0 5px #05060
       <header class="tbar">
         <span class="tbar-glyph" aria-hidden="true">⎇</span>
         <h3><a href="https://github.com/saadzid/Class-Schedule-Manager" rel="noopener">Class-Schedule-Manager</a></h3>
-        <span class="tbar-controls" aria-hidden="true"><i>–</i><i>▢</i><i>×</i></span>
+        <span class="tbar-controls" aria-hidden="true"><i>−</i><i>▢</i><i>×</i></span>
       </header>
       <div class="win-body">
         <span class="badge"><span class="en">Public</span><span class="ar" lang="ar">عام</span></span>
@@ -1460,18 +1501,18 @@ html[data-theme="dark"] .phone{ box-shadow:var(--shadow), inset 0 0 0 5px #05060
            <span class="ar" lang="ar">أداة مكتبية لجدولة القاعات في مختبر الجامعة. تُحمّل ملف المقررات، وترصد كل تعارض بين قاعة ووقت، وتتيح سحب المحاضرة إلى موعد جديد.</span></p>
         <ul class="specs">
           <li><span class="en">drag to reschedule, snapping to 15-minute steps</span><span class="ar" lang="ar">السحب لإعادة الجدولة مع محاذاة كل 15 دقيقة</span></li>
-          <li><span class="en">conflicts render red · edits round-trip back to Excel</span><span class="ar" lang="ar">تظهر التعارضات بالأحمر · وتُحفظ التعديلات في ملف Excel</span></li>
+          <li><span class="en">conflicts render red · edits round-trip back to Excel</span><span class="ar" lang="ar">تظهر التعارضات بالأحمر · تُحفظ التعديلات في ملف Excel</span></li>
         </ul>
         <footer class="win-foot">
           <span class="lang-dot"><i style="--dot:#3572A5"></i>Python · Tkinter</span>
-          <span>role: sole author</span>
+          <span><span class="en">role: sole author</span><span class="ar" lang="ar" dir="rtl">الدور: المؤلف الوحيد</span></span>
         </footer>
       </div>
     </article>
 
     <p class="gh-note">
-      <span class="en">Most of this work lives in private client and company repositories, so the source stays with them. The one public repo is linked above; the rest I can walk you through line by line. Profile: <a href="https://github.com/sa3d-zidouri-work" rel="noopener" dir="ltr">github.com/sa3d-zidouri-work</a>.</span>
-      <span class="ar" lang="ar">معظم هذا العمل في مستودعات خاصة بالعملاء والشركات، والشيفرة تبقى لديهم. المستودع العام الوحيد مرتبط أعلاه، وما تبقّى يسعدني استعراضه سطرًا بسطر. الحساب: <a href="https://github.com/sa3d-zidouri-work" rel="noopener" dir="ltr">github.com/sa3d-zidouri-work</a>.</span>
+      <span class="en">Most of this work lives in private client and company repositories, so the source stays with them. The one public repo is linked above; the rest I can walk through in an interview. Profile: <a href="https://github.com/sa3d-zidouri-work" rel="noopener" dir="ltr">github.com/sa3d-zidouri-work</a>.</span>
+      <span class="ar" lang="ar">معظم هذا العمل في مستودعات خاصة بالعملاء والشركات، والشيفرة تبقى لديهم. المستودع العام الوحيد مرتبط أعلاه، وما تبقّى يسعدني استعراضه في مقابلة. الحساب: <a href="https://github.com/sa3d-zidouri-work" rel="noopener" dir="ltr">github.com/sa3d-zidouri-work</a>.</span>
     </p>
   </div>
 </section>
@@ -1482,28 +1523,33 @@ html[data-theme="dark"] .phone{ box-shadow:var(--shadow), inset 0 0 0 5px #05060
     <h2 class="h2 reveal-h" id="sec-title"><span class="en">Security</span><span class="ar" lang="ar">الأمن السيبراني</span></h2>
   </div>
   <div class="section-grid">
-    <aside class="rail" aria-label="Security credentials">
+    <aside class="rail" aria-label="Security credentials" data-aria-ar="مؤهلات الأمن السيبراني">
       <p class="section-sub">
-        <span class="en">A recon pass in my own dialect. Every line below is verifiable; nothing is staged beyond the typing.</span>
-        <span class="ar" lang="ar">جولة استطلاع بأسلوبي الخاص. كل سطر أدناه قابل للتحقق؛ لا شيء مصطنع سوى حركة الكتابة.</span>
+        <span class="en">Certifications, competition record, bug-bounty platforms and tooling.</span>
+        <span class="ar" lang="ar">الشهادات وسجل المسابقات ومنصات مكافآت الثغرات والأدوات.</span>
       </p>
       <ul class="creds">
-        <li><span class="tag"><span class="en">EARNED</span><span class="ar" lang="ar">مُنجزة</span></span><br>
-          eJPTv2 · INE · <span class="en">Jan 2025 → Jan 2028</span><span class="ar" lang="ar">يناير 2025 ← يناير 2028</span><br>
+        <li><span class="tag"><span class="en">EARNED</span><span class="ar" lang="ar">حاصل عليها</span></span><br>
+          eJPTv2 · INE · <span class="en"><span class="nowrap">Jan 2025 → Jan 2028</span></span><span class="ar" lang="ar"><span class="nowrap">يناير 2025 ← يناير 2028</span></span><br>
           <a href="https://certs.ine.com/e5c12a68-a072-4847-8db0-08cc06f696ee" rel="noopener" dir="ltr">certs.ine.com/e5c12a68…</a></li>
         <li><span class="tag dim"><span class="en">IN PROGRESS</span><span class="ar" lang="ar">قيد التحضير</span></span><br>
-          <span dir="ltr">eWPTX · Security+ · Network+ · CCNA</span></li>
+          <span dir="ltr">eWPTX · Security+ · Network+ · A+ · CCNA</span></li>
         <li><span class="tag"><span class="en">PODIUM</span><span class="ar" lang="ar">منصة التتويج</span></span><br>
           <span class="en">KFUPM CTF · 3rd place · team lead</span>
           <span class="ar" lang="ar">مسابقة CTF الجامعية · المركز الثالث · قائد فريق</span></li>
+        <li><span class="tag"><span class="en">BUG BOUNTY</span><span class="ar" lang="ar">مكافآت الثغرات</span></span><br>
+          <span dir="ltr">HackerOne · Bugcrowd · BugBounty.sa · <span class="nowrap">2025 – 2026</span></span></li>
+        <li><span class="tag"><span class="en">WEB PENTEST PRACTICE</span><span class="ar" lang="ar">تدريب اختبار اختراق الويب</span></span><br>
+          <span class="en">INE eWPTX labs · PortSwigger · HTB · TryHackMe · WSTG reports</span>
+          <span class="ar" lang="ar">مختبرات INE eWPTX · PortSwigger · HTB · TryHackMe · تقارير WSTG</span></li>
       </ul>
-      <div class="toolrow" aria-label="Tooling">
-        <span>Burp Suite</span><span>Wireshark</span><span>Metasploit</span><span>Nmap</span><span>Scapy</span><span>Packet Tracer</span>
+      <div class="toolrow" aria-label="Tooling" data-aria-ar="الأدوات">
+        <span>Burp Suite</span><span>OWASP ZAP</span><span>Nmap</span><span>Metasploit</span><span>ffuf</span><span>sqlmap</span><span>subfinder</span><span>amass</span><span>httpx</span><span>nuclei</span><span>Wireshark</span><span>Scapy</span>
       </div>
       <div class="sec-pulse" aria-hidden="true">
         <span class="led"></span>
         <svg viewBox="0 0 64 16"><path class="p" d="M0 8 H12 l3 -6 l3 11 l3 -8 l2 3 H30 l3 -6 l3 11 l3 -8 l2 3 H64"/></svg>
-        <span>MONITORING</span>
+        <span><span class="en">MONITORING</span><span class="ar" lang="ar">مراقبة</span></span>
       </div>
     </aside>
 
@@ -1520,32 +1566,35 @@ html[data-theme="dark"] .phone{ box-shadow:var(--shadow), inset 0 0 0 5px #05060
             <button type="button" id="term-skip"><span class="en">show all</span><span class="ar" lang="ar">عرض الكل</span></button>
           </div>
         </div>
-        <div class="term-body" id="term-body" tabindex="0" aria-label="Recon session transcript">
+        <div class="term-body" id="term-body" tabindex="0" aria-label="Recon session transcript" data-aria-ar="نص جلسة الاستطلاع">
 <div class="tl cmd"><span class="ps1">saad@recon:~$ </span><span class="typed">nmap -sV --script=profile saad-zidouri.dev</span></div>
-<div class="tl out">Starting Nmap 7.95 — 2026, AST</div>
+<div class="tl out">Starting Nmap 7.95 at 2026 AST</div>
 <div class="tl out">PORT     STATE  SERVICE   VERSION</div>
 <div class="tl out">443/tcp  open   https     portfolio (mobile engineering / security testing)</div>
 <div class="tl out">| certifications:</div>
 <div class="tl hi">|   [EARNED]       eJPTv2 · INE · Jan 2025 → expires Jan 2028</div>
 <div class="tl out">|                  verify: certs.ine.com/e5c12a68-a072-4847-8db0-08cc06f696ee</div>
-<div class="tl out">|   [IN PROGRESS]  eWPTX · CompTIA Security+ · Network+ · CCNA</div>
+<div class="tl out">|   [IN PROGRESS]  eWPTX · CompTIA Security+ · Network+ · A+ · CCNA</div>
 <div class="tl out">| ctf-record:</div>
 <div class="tl hi">|   KFUPM CTF · 3rd place · team lead</div>
-<div class="tl out">|   Wireshark · Metasploit · Nmap — under time pressure</div>
+<div class="tl out">|   web and network exploitation · Wireshark · Metasploit · Nmap</div>
+<div class="tl out">| bounty-practice:</div>
+<div class="tl hi">|   HackerOne · Bugcrowd · BugBounty.sa · 2025 – 2026</div>
+<div class="tl out">|   recon → WSTG checklist → written report, per program</div>
+<div class="tl out">| toolkit:</div>
+<div class="tl out">|   personal recon toolkit (Python/Bash): subdomains · endpoints/JS</div>
+<div class="tl out">|   asset diff · report templates mapped to the OWASP WSTG</div>
 <div class="tl out">| toolset:</div>
-<div class="tl out">|_  Burp Suite · Wireshark · Metasploit · Nmap · Scapy · Packet Tracer</div>
+<div class="tl out">|   Burp Suite · OWASP ZAP · Nmap · Metasploit · ffuf · sqlmap</div>
+<div class="tl out">|_  subfinder · amass · httpx · nuclei · Wireshark · Scapy</div>
 <div class="tl out"> </div>
-<div class="tl cmd"><span class="ps1">saad@recon:~$ </span><span class="typed">git log --oneline --grep=security -- journey-joy/</span></div>
-<div class="tl out">[*] 21 security commits on a production ride-hailing platform</div>
-<div class="tl out">[*] MASTER_OTP backdoor removed · 2x IDOR · path traversal · Paymob HMAC</div>
+<div class="tl cmd"><span class="ps1">saad@recon:~$ </span><span class="typed">cat ~/targets/journey-joy/hardening.log</span></div>
+<div class="tl out">[*] MASTER_OTP backdoor removed · 2x IDOR fixed · path traversal closed</div>
+<div class="tl out">[*] Paymob HMAC verified · S3 behind presigned reads · rate limiting on login and OTP</div>
 <div class="tl ok">[+] 43 customers' data purged from git history, rewrite verified</div>
 <div class="tl cmd"><span class="ps1">saad@recon:~$ </span><span class="cursor" aria-hidden="true"></span></div>
         </div>
       </div>
-      <p class="term-note">
-        <span class="en">Full transcript lives in the page — readable without JavaScript, replay optional, reduced-motion gets the still version.</span>
-        <span class="ar" lang="ar">النص الكامل موجود في الصفحة — يُقرأ دون JavaScript، وإعادة التشغيل اختيارية، ومع تفضيل تقليل الحركة يظهر ثابتًا.</span>
-      </p>
     </div>
   </div>
 </section>
@@ -1553,26 +1602,22 @@ html[data-theme="dark"] .phone{ box-shadow:var(--shadow), inset 0 0 0 5px #05060
 <!-- ==================== SKILLS ==================== -->
 <section class="section skills" id="skills" aria-labelledby="sk-title">
   <h2 class="h2 reveal-h" id="sk-title"><span class="en">Skills</span><span class="ar" lang="ar">المهارات</span></h2>
-  <p class="section-sub">
-    <span class="en">Grouped the way I actually use them: shipping, scripting, breaking, and the systems that hold it together.</span>
-    <span class="ar" lang="ar">مصنّفة كما أستخدمها فعلًا: بناءً وبرمجةً واختبارًا، والأنظمة التي تربط ذلك كله.</span>
-  </p>
   <dl class="skill-rows" style="margin-top:2rem">
     <div class="skill-row">
       <dt><span class="en">Mobile</span><span class="ar" lang="ar">تطبيقات الجوال</span></dt>
-      <dd><span>Flutter</span><span>Dart</span><span><span class="en">state management</span><span class="ar" lang="ar">إدارة الحالة</span></span><span>REST APIs</span><span>Supabase</span></dd>
+      <dd><span>Flutter</span><span>Dart</span><span><span class="en">state management</span><span class="ar" lang="ar">إدارة الحالة</span></span><span>REST APIs</span><span>Supabase</span><span>Node/Express</span><span>MySQL</span></dd>
     </div>
     <div class="skill-row">
       <dt><span class="en">Languages</span><span class="ar" lang="ar">لغات البرمجة</span></dt>
-      <dd><span class="cert">Python · PCEP</span><span>Bash</span><span>Dart</span><span>Java</span><span>C</span></dd>
+      <dd><span class="cert">Python · PCEP</span><span>Bash</span><span>Dart</span><span>TypeScript</span><span>Java</span><span>C</span></dd>
     </div>
     <div class="skill-row">
       <dt><span class="en">Security</span><span class="ar" lang="ar">الأمن</span></dt>
-      <dd><span><span class="en">web pentesting</span><span class="ar" lang="ar">اختبار اختراق الويب</span></span><span><span class="en">vulnerability assessment</span><span class="ar" lang="ar">تقييم الثغرات</span></span><span><span class="en">recon automation</span><span class="ar" lang="ar">أتمتة الاستطلاع</span></span><span>OWASP</span><span>RBAC</span></dd>
+      <dd><span><span class="en">web pentesting</span><span class="ar" lang="ar">اختبار اختراق الويب</span></span><span><span class="en">vulnerability assessment</span><span class="ar" lang="ar">تقييم الثغرات</span></span><span><span class="en">bug bounty recon</span><span class="ar" lang="ar">استطلاع مكافآت الثغرات</span></span><span><span class="en">recon automation</span><span class="ar" lang="ar">أتمتة الاستطلاع</span></span><span><span class="en">WSTG reporting</span><span class="ar" lang="ar">إعداد تقارير WSTG</span></span><span>OWASP</span><span>RBAC</span></dd>
     </div>
     <div class="skill-row">
       <dt><span class="en">Systems</span><span class="ar" lang="ar">الأنظمة والأدوات</span></dt>
-      <dd><span>Microsoft Dynamics 365</span><span>Postman</span><span>Power Automate</span><span>Git / GitHub</span><span>Railway</span><span>Vercel</span></dd>
+      <dd><span>Microsoft Dynamics 365</span><span>AWS (EC2, RDS, S3)</span><span>Postman</span><span>Power Automate</span><span>Git / GitHub</span><span>Railway</span><span>Vercel</span></dd>
     </div>
     <div class="skill-row">
       <dt><span class="en">Operating systems</span><span class="ar" lang="ar">أنظمة التشغيل</span></dt>
@@ -1601,7 +1646,7 @@ html[data-theme="dark"] .phone{ box-shadow:var(--shadow), inset 0 0 0 5px #05060
         <li><b><span class="en">Arabic</span><span class="ar" lang="ar">العربية</span></b>
             <span class="lvl"><span class="en">native</span><span class="ar" lang="ar">اللغة الأم</span></span></li>
         <li><b><span class="en">English</span><span class="ar" lang="ar">الإنجليزية</span></b>
-            <span class="lvl"><span class="en">full professional · IELTS 6.5 (Speaking 7.5)</span><span class="ar" lang="ar">إتقان مهني كامل · IELTS 6.5 (المحادثة 7.5)</span></span></li>
+            <span class="lvl"><span class="en">full professional · IELTS 6.5 <span class="nowrap">(Speaking 7.5)</span></span><span class="ar" lang="ar">إتقان مهني كامل · IELTS 6.5 <span class="nowrap">(المحادثة 7.5)</span></span></span></li>
         <li><b><span class="en">French</span><span class="ar" lang="ar">الفرنسية</span></b>
             <span class="lvl"><span class="en">elementary</span><span class="ar" lang="ar">مستوى مبتدئ</span></span></li>
         <li><b><span class="en">Japanese</span><span class="ar" lang="ar">اليابانية</span></b>
@@ -1616,12 +1661,12 @@ html[data-theme="dark"] .phone{ box-shadow:var(--shadow), inset 0 0 0 5px #05060
   <div class="contact-grid">
     <div>
       <h2 class="h2 reveal-h" id="ct-title">
-        <span class="en">The next thing I ship could be yours.</span>
-        <span class="ar" lang="ar">قد يكون مشروعك هو ما أبنيه تاليًا.</span>
+        <span class="en">Get in touch.</span>
+        <span class="ar" lang="ar">تواصل معي.</span>
       </h2>
       <p class="contact-sub">
-        <span class="en">Graduating December 2026, open to software engineering and security roles. I answer fast.</span>
-        <span class="ar" lang="ar">أتخرّج في ديسمبر 2026، وأنا متاح لأدوار هندسة البرمجيات والأمن السيبراني. أردّ سريعًا.</span>
+        <span class="en">Graduating December 2026, open to software engineering and security roles.</span>
+        <span class="ar" lang="ar">أتخرّج في ديسمبر 2026، وأنا متاح لأدوار هندسة البرمجيات والأمن السيبراني.</span>
       </p>
       <div class="contact-btns">
         <a class="primary" href="mailto:saad.zidoori@gmail.com"><span class="en">Email</span><span class="ar" lang="ar">البريد الإلكتروني</span></a>
@@ -1633,9 +1678,9 @@ html[data-theme="dark"] .phone{ box-shadow:var(--shadow), inset 0 0 0 5px #05060
     <div class="qr-slot">
       <span class="qr-cap"><span class="en">scan → live site</span><span class="ar" lang="ar">امسح ← الموقع المباشر</span></span>
       <div class="qr-frame">
-        <canvas id="qr" width="185" height="185" role="img" aria-label="QR code linking to the live site at portfolio-production-5c1c.up.railway.app">QR</canvas>
+        <canvas id="qr" width="185" height="185" role="img" aria-label="QR code linking to the live site at portfolio-production-5c1c.up.railway.app" data-aria-ar="رمز QR يربط بالموقع المباشر portfolio-production-5c1c.up.railway.app">QR</canvas>
       </div>
-      <a class="qr-url" href="https://portfolio-production-5c1c.up.railway.app/" rel="noopener" dir="ltr">portfolio-production-5c1c.up.railway.app</a>
+      <a class="qr-url" href="https://portfolio-production-5c1c.up.railway.app/" rel="noopener" dir="ltr">portfolio-production-5c1c.<wbr>up.railway.app</a>
     </div>
   </div>
 </section>
@@ -1688,8 +1733,13 @@ syncTheme();
 
 /* ==================== language: EN / عربي, full mirror ==================== */
 var langBtn = document.getElementById('lang-btn');
+/* aria-labels follow the language: English is captured once into data-aria-en */
+var ariaEls = Array.prototype.slice.call(document.querySelectorAll('[data-aria-ar]'));
+ariaEls.forEach(function(el){ el.dataset.ariaEn = el.getAttribute('aria-label') || ''; });
 function syncLang(){
-  langBtn.setAttribute('aria-pressed', String(doc.dataset.lang === 'ar'));
+  var ar = doc.dataset.lang === 'ar';
+  langBtn.setAttribute('aria-pressed', String(ar));
+  ariaEls.forEach(function(el){ el.setAttribute('aria-label', ar ? el.dataset.ariaAr : el.dataset.ariaEn); });
 }
 langBtn.addEventListener('click', function(){
   var toAr = doc.dataset.lang !== 'ar';

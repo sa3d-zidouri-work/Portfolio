@@ -72,7 +72,7 @@ Scope: five CVs generated from one content source in Google XYZ form, a new Pene
 - [x] G13: screenshots of /, /cv/ and all five CVs render correctly in dark and light themes at desktop and 400 px width, and the Arabic toggle shows the freelance row and rewritten bullets
   EVIDENCE: 2026-09-12 reviewed by the orchestrator in Chrome DevTools against http://127.0.0.1:8765: hero at 1440 dark+light, 1920 dark, 1440 Arabic, 400 mobile dark (chip row under the phone, no chip touches text or the phone screen; scrollWidth <= innerWidth at every width); terminal at 400 wraps (term-body scrollWidth == clientWidth 353); PDFs rendered via pdftoppm and inspected (merged, pentest, appsec, software 2 pages, software-1page 1 page, no orphaned headings). Visual QA agent screenshots qa-*.jpeg and fix-*.jpeg in the session scratchpad cover /cv/ (5 cards, 10 links 200) and every CV page at 1100 and 400; console empty on / and /cv/.
 
-- [ ] G14: after push, the live site serves the new content on /, /cv/ and /cv/pentest.html, and /cv/src/content.py returns 404
+- [x] G14: after push, the live site serves the new content on /, /cv/ and /cv/pentest.html, and /cv/src/content.py returns 404
   CHECK: python3 cv/src/check.py live
   EXPECT: LIVE OK
-  EVIDENCE: pending
+  EVIDENCE: exit=0; shell=/bin/sh; cwd=/home/daaz_/Downloads/Life/Portfolio; path=eaed0b040f1e/13 entries; EXPECT=matched; output-sha256=56d64aad1f9923daaeada9e5afdd5d6afca68fadb29640730a354715a9411b18; output-bytes=8

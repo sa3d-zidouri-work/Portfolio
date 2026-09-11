@@ -36,21 +36,22 @@ ROLES = {
         "bullets": [
             ("all", "Built a quotations module that writes directly into Microsoft Dynamics 365 production and produces VAT-correct bilingual PDFs with product photos."),
             ("all", "Took the Tabby buy-now-pay-later gateway from sandbox to production in Dynamics 365 by owning the integration end to end with Tabby's team."),
-            ("all", "Kept showroom price tags printing at true physical size by recalibrating the 4-up template across the render templates, server, printers admin page and desktop print agent of the price-tag pipeline, continued from an existing base."),
+            ("all", "Took over a broken price-tag pipeline and rebuilt it end to end (daily Dynamics 365 price diff over API, bilingual A4 tag sheets at true physical size, desktop print agent) so showroom staff print tags on the spot."),
             ("all", "Caught payment defects before release by running full ERP payment flows and filing prioritized issue reports."),
         ],
     },
     "freelance": {
         "title": "Freelance Software Engineer",
         "org": "Independent client work",
-        "org_note": "taking inherited apps through to store submission",
+        "org_note": "digital transformation of inherited apps: audits, payment and maps integration, cloud and SQL backends, store release",
         "loc": "Remote",
         "period": "Mar 2026 – Present",
-        "engagement": "Journey Joy (rebranded Rifqah for the 2.x release), campus ride-hailing platform: Node/Express + MySQL backend, React admin panel, Flutter driver and passenger apps · Jul 2026 – Present",
+        "engagement": "Journey Joy (rebranded Rifqah for the 2.x release), campus ride-hailing platform live on the App Store and Google Play: Node/Express + MySQL backend, React admin panel, Flutter driver and passenger apps · Jul 2026 – Present",
         "bullets": [
-            ("all", "Took the platform from an inherited English-only, partly integrated codebase (v1.x apps already on the App Store and Google Play) to a 2.x release candidate now with the owner's team for store submission, with the backend and admin panel changes below already in production."),
+            ("all", "Took the platform from an inherited English-only, partly integrated codebase to a 2.x release live on the App Store and Google Play by fixing iOS archiving and signing, shipping 2.0.0 and 2.2.0 through App Store Connect and adding a Play-compliant Android release script."),
             ("sec", "Removed four vulnerabilities from the platform: a MASTER_OTP login backdoor that let one universal code sign in to any account, two broken-object-level-authorization (IDOR) flaws and an unauthenticated path traversal."),
-            ("dev", "Hardened the inherited Paymob card integration and made it reconcile: charging the booking actually being paid for, a saved-card toggle, subscription cancellation and renewal, and refund reconciliation through the gateway's transaction inquiry, with the server side prepared for Apple Pay behind config."),
+            ("dev", "Let passengers pay by card, saved card and Apple Pay by completing and hardening the inherited Paymob integration: the Apple Pay entitlement, a saved-card toggle, charging the booking actually being paid for, subscription cancellation and renewal, and refund reconciliation through the gateway's transaction inquiry."),
+            ("all", "Deliver digital-transformation work on client apps in any state: audit the codebase, integrate payment gateways and maps, move the backend onto AWS and SQL databases, localize, and carry the release to both stores."),
             ("dev", "Made the platform usable by Arabic-speaking passengers and drivers by localizing all three surfaces (driver, passenger, admin) with RTL layout, Arabic typography and Arabic district names generated from the platform's live district list."),
             ("sec", "Purged 43 customers' personal data from git history with a verified rewrite, then added per-IP and per-account rate limiting, HMAC verification on Paymob callbacks, presigned S3 reads and a pre-commit secret scanner."),
             ("dev", "Made production deploys repeatable on the existing AWS EC2, RDS and S3 stack with a deploy script, drift check and schema preflight, and wrote the credential-rotation runbook after diagnosing two rotations that never reached the server."),
@@ -127,8 +128,8 @@ PROJECTS = {
         "tag": "Ride-hailing · Production",
         "tag_sec": "Ride-hailing · Security",
         "variants": ["merged", "pentest", "appsec", "software"],
-        "text": "Node/Express + MySQL backend, React admin panel, Flutter driver and passenger apps; the v1.x apps are on the App Store and Google Play and my 2.x work is in the release candidate. Added since inheriting it: per-driver zone polygons on Google Maps with point-in-polygon matching, an SOS panic button with operator contacts, and 1:1 chat with report and block.",
-        "text_merged": "The v1.x apps are on the App Store and Google Play; my 2.x work is in the release candidate. Added since inheriting the English-only codebase: Arabic and RTL across all three surfaces, per-driver zone polygons on Google Maps with point-in-polygon matching, SOS panic button and 1:1 chat, repeatable AWS deploys, a 2,363-test mocha suite, and a security pass that also purged 43 customers' personal data from git history.",
+        "text": "Live on the App Store and Google Play: Node/Express + MySQL backend, React admin panel, Flutter driver and passenger apps. Added since inheriting it: per-driver zone polygons on Google Maps with point-in-polygon matching, an SOS panic button with operator contacts, and 1:1 chat with report and block.",
+        "text_merged": "Live on the App Store and Google Play. Added since inheriting the English-only codebase: Arabic and RTL across all three surfaces, per-driver zone polygons on Google Maps with point-in-polygon matching, SOS panic button and 1:1 chat, repeatable AWS deploys, a 2,363-test mocha suite, and a security pass that also purged 43 customers' personal data from git history.",
         "text_sec": "Authorized security work on a production ride-hailing platform (Node/Express, React, Flutter) whose code I also maintain: the backdoor, IDOR and path-traversal fixes and the hardening are itemized under Freelance Software Engineer, and every fix is deployed to the production backend.",
     },
     "rugaib": {
@@ -162,11 +163,11 @@ PROJECTS = {
 # ---------------------------------------------------------------------------
 
 SKILLS = {
-    "security": ("Security", "Web penetration testing, bug bounty reconnaissance, vulnerability assessment, OWASP Top 10 and WSTG, secure code review, RBAC · Burp Suite, OWASP ZAP, Nmap, Metasploit, ffuf, sqlmap, subfinder, amass, httpx, nuclei, Wireshark, Scapy, Kali Linux"),
+    "security": ("Security", "Web penetration testing, bug bounty reconnaissance, vulnerability assessment, OWASP Top 10 and WSTG, secure code review, RBAC · Burp Suite, OWASP ZAP, Nmap, Metasploit, ffuf, gobuster, sqlmap, nikto, wpscan, Hydra, John the Ripper, hashcat, enum4linux, smbmap, subfinder, amass, httpx, nuclei, Wireshark, Scapy, Netcat, SecLists, Kali Linux"),
     "security_short": ("Security", "OWASP Top 10, RBAC, vulnerability assessment · Burp Suite, Nmap, Wireshark (eJPTv2 certified)"),
-    "mobile": ("Mobile / Dev", "Flutter, Dart, Riverpod, REST APIs, Supabase, Node/Express, MySQL, Google Play and App Store release preparation"),
-    "languages": ("Languages", "Python (PCEP), Bash, Dart, TypeScript/JavaScript, Java, C"),
-    "systems": ("Systems", "Microsoft Dynamics 365, AWS (EC2, RDS, S3), Postman, Power Automate, Git/GitHub, Railway, Vercel, Linux"),
+    "mobile": ("Mobile / Dev", "Flutter, Dart, Riverpod, REST APIs, Node/Express, Supabase, Google Play and App Store release"),
+    "languages": ("Languages", "Python (PCEP), Bash, Dart, TypeScript/JavaScript, SQL, Java, C"),
+    "systems": ("Systems", "AWS (EC2, RDS, S3), MySQL, PostgreSQL (Supabase), Microsoft Dynamics 365, Postman, Power Automate, Git/GitHub, Railway, Vercel, Linux"),
 }
 
 CERTS = [
@@ -192,8 +193,8 @@ SUMMARIES = {
     "merged": "Computer Engineering senior at KFUPM, graduating December 2026, open to software engineering and security roles. Production Flutter and full-stack work at Al Rugaib and for a freelance ride-hailing client, and security testing of that same code: eJPTv2 certified, with bug-bounty work on HackerOne, Bugcrowd and BugBounty.sa.",
     "pentest": "eJPTv2 certified (INE, Jan 2025), eWPTX in progress. Web application testing is the focus: WSTG-mapped write-ups on public bug-bounty programs, a security pass on a production ride-hailing platform whose code I also maintain, and a KFUPM CTF team lead. Computer Engineering senior at KFUPM, graduating December 2026, seeking a penetration testing or security analyst role.",
     "appsec": "Security work done from the developer's seat: RBAC design in an ERP-backed Flutter app, a security pass on a production Node/Express platform I also maintain, and a Supabase schema with row-level security on every table. eJPTv2 certified (INE, Jan 2025), eWPTX in progress. Computer Engineering senior at KFUPM, graduating December 2026, seeking an application security or secure-development role.",
-    "software": "Flutter and Node/Express engineer with two production codebases in daily use: an ERP-backed sales superapp at Al Rugaib (intern, now part-time developer) and a freelance ride-hailing platform whose apps are on the App Store and Google Play. Takes work through to release: payment-gateway integration, deploy scripts, a mocha test suite and the store-submission handover. Computer Engineering senior at KFUPM, graduating December 2026.",
-    "software-1page": "Flutter developer with two production codebases in daily use: an ERP-backed sales superapp at Al Rugaib and a freelance ride-hailing platform whose apps are on the App Store and Google Play. Computer Engineering senior at KFUPM, graduating December 2026.",
+    "software": "Flutter and Node/Express engineer with two production codebases in daily use: an ERP-backed sales superapp at Al Rugaib (intern, now part-time developer) and a freelance ride-hailing platform live on the App Store and Google Play. Takes work through to release: payment-gateway integration, iOS and Android release engineering, AWS deploys and a mocha test suite. Computer Engineering senior at KFUPM, graduating December 2026.",
+    "software-1page": "Flutter developer with two production codebases in daily use: an ERP-backed sales superapp at Al Rugaib and a freelance ride-hailing platform live on the App Store and Google Play. Computer Engineering senior at KFUPM, graduating December 2026.",
 }
 
 # Figures that must read identically on the site and on the CVs.
